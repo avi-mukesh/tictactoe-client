@@ -4,6 +4,7 @@ import Layout from "./components/Layout";
 import useTitle from "./hooks/useTitle";
 import Login from "./components/Login";
 import Register from "./components/Register";
+import Play from "./components/Play";
 import NotLoggedInSharedLayout from "./components/NotLoggedInSharedLayout";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
+        <Route path="/play" element={<Play />} />
       </Route>
     </Routes>
   );

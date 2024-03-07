@@ -2,13 +2,17 @@ import React from "react";
 import Board from "./Board";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SpectateButton from "./SpectateButton";
 
 const Login = () => {
+  const navigate = useNavigate();
+
   const onLogin = (values, { setSubmitting }) => {
-    console.log("logging on with these details", values);
+    console.log("logging in with these details", values);
     setSubmitting(false);
+
+    navigate("/play");
   };
 
   return (
@@ -16,14 +20,12 @@ const Login = () => {
       {({ isSubmitting }) => (
         <Form>
           <div className="input-group">
+            <Field type="text" name="username" required />
             <label htmlFor="username">Username</label>
-            <Field type="text" name="username" />
-            <ErrorMessage name="username" component="div" />
           </div>
           <div className="input-group">
+            <Field type="password" name="password" required />
             <label htmlFor="password">Password</label>
-            <Field type="password" name="password" />
-            <ErrorMessage name="username" component="div" />
           </div>
           <button
             className="btn btn-primary"

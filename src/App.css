@@ -249,8 +249,11 @@ ul {
 }
 
 .nav-button {
+  cursor: pointer;
   height: 100%;
-  display: block;
+  display: grid;
+  place-content: center;
+  place-items: center;
   width: 33.3%;
   color: var(--light);
   font-size: 1.7rem;

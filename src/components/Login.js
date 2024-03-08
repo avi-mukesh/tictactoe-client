@@ -1,18 +1,26 @@
-import React from "react";
-import Board from "./Board";
-import { ErrorMessage, Field, Form, Formik } from "formik";
-import * as Yup from "yup";
+import React, { useEffect } from "react";
+import { Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
-import SpectateButton from "./SpectateButton";
+import { useSelector, useDispatch } from "react-redux";
+import { loginUser } from "../features/auth/authAction";
 
 const Login = () => {
+  const { loading, userInfo, error } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/profile");
+    }
+  }, [navigate, userInfo]);
 
   const onLogin = (values, { setSubmitting }) => {
     console.log("logging in with these details", values);
     setSubmitting(false);
-
-    navigate("/play");
+    dispatch(loginUser(values));
+    // navigate("/play");
   };
 
   return (

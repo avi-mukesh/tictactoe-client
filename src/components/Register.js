@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Board from "./Board";
 import SpectateButton from "./SpectateButton";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import ValidationError from "./ValidationError";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../features/auth/authAction";
+import { useDispatch, useSelector } from "react-redux";
 
 const RegistrationSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -21,9 +23,20 @@ const RegistrationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const { loading, userInfo, error, success } = useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  useEffect(() => {
+    if (success) navigate("/");
+    if (userInfo) navigate("/profile");
+  }, [navigate, userInfo, success]);
+
   const onRegister = (values, { setSubmitting }) => {
     console.log("registeirng with these details", values);
     setSubmitting(false);
+    dispatch(registerUser(values));
   };
 
   return (

@@ -7,6 +7,7 @@ import Register from "./components/Register";
 import Play from "./components/Play";
 import NotLoggedInSharedLayout from "./components/NotLoggedInSharedLayout";
 import Profile from "./components/Profile";
+import RequireAuth from "./components/RequireAuth";
 
 function App() {
   useTitle("Login");
@@ -18,8 +19,10 @@ function App() {
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
         </Route>
-        <Route path="/play" element={<Play />} />
-        <Route path="/profile" element={<Profile />} />
+        <Route element={<RequireAuth />}>
+          <Route path="/play" element={<Play />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Route>
     </Routes>
   );

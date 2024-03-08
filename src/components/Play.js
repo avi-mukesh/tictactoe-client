@@ -10,7 +10,6 @@ const Play = () => {
         <button className="btn btn-primary">Play a stranger</button>
         <button className="btn btn-primary">Play a friend</button>
       </section>
-      <Navbar />
     </>
   );
 };

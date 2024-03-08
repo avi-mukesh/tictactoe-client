@@ -15,7 +15,15 @@ const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    logout: (state) => {},
+    // logging out just resets the Redux store to its initial value and clears the token from local storage
+    // this isn't an asynchronous task so can create it directly within this slice
+    logout: (state) => {
+      localStorage.removeItem("accessToken");
+      state.loading = false;
+      state.userInfo = null;
+      state.accessToken = null;
+      state.error = null;
+    },
     setCredentials: (state, { payload }) => {
       state.userInfo = payload;
     },

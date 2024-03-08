@@ -25,7 +25,9 @@ const Profile = () => {
           : "You're not logged in"}
       </div>
       <div>
-        <button className="btn btn-danger">Log out</button>
+        <button className="btn btn-danger" onClick={() => dispatch(logout())}>
+          Log out
+        </button>
       </div>
     </>
   );

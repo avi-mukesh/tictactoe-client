@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-import { NavLink, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
+import { AuthProvider } from "../context/AuthContext";
 import Navbar from "./Navbar";
 
 const RequireAuth = () => {

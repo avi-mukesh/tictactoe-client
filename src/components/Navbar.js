@@ -9,12 +9,12 @@ const Navbar = () => {
     <footer className="footer">
       <nav className="nav">
         <ul>
-          <NavButton>
+          <NavButton linkTo="/spectate">
             <FontAwesomeIcon icon={faEye} />
             <p>Spectate</p>
           </NavButton>
-          <NavButton>Play</NavButton>
-          <NavButton>
+          <NavButton linkTo="/play">Play</NavButton>
+          <NavButton linkTo="/profile">
             <FontAwesomeIcon icon={faUser} />
             <p>My Profile</p>
           </NavButton>

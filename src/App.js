@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Play from "./components/Play";
 import NotLoggedInSharedLayout from "./components/NotLoggedInSharedLayout";
+import Profile from "./components/Profile";
 
 function App() {
   useTitle("Login");
@@ -18,6 +19,7 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
         <Route path="/play" element={<Play />} />
+        <Route path="/profile" element={<Profile />} />
       </Route>
     </Routes>
   );

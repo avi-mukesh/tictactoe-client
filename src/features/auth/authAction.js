@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk(
       };
 
       await axios.post(
-        `${backendURL}/api/user/register`,
+        `${backendURL}/auth/register`,
         { username, email, password },
         config
       );
@@ -44,12 +44,18 @@ export const loginUser = createAsyncThunk(
         },
       };
 
+      console.log(
+        `trying to login in with username: ${username}, password: ${password}`
+      );
+
       const { data } = await axios.post(
-        `${backendURL}/api/user/login`,
+        `${backendURL}/auth/login`,
         { username, password },
         config
       );
+      console.log("data returned from logging in", data);
       localStorage.setItem("accessToken", data.accessToken);
+      return data;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

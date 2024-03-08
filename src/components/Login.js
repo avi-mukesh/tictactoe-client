@@ -20,7 +20,7 @@ const Login = () => {
     console.log("logging in with these details", values);
     setSubmitting(false);
     dispatch(loginUser(values));
-    // navigate("/play");
+    navigate("/profile");
   };
 
   return (

@@ -14,7 +14,12 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {},
+  reducers: {
+    logout: (state) => {},
+    setCredentials: (state, { payload }) => {
+      state.userInfo = payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(registerUser.pending, (state) => {
       state.loading = true;
@@ -33,6 +38,7 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
+      console.log("payload after logging in", payload);
       state.loading = false;
       state.userInfo = payload;
       state.accessToken = payload.accessToken;
@@ -43,5 +49,7 @@ const authSlice = createSlice({
     });
   },
 });
+
+export const { logout, setCredentials } = authSlice.actions;
 
 export default authSlice.reducer;

@@ -18,14 +18,14 @@ export const authApi = createApi({
         return headers;
       }
     },
-    // set of operations we want to perform against the server
-    // two types of endpoints: query and mutation
-    endpoints: (builder) => ({
-      getUserDetails: builder.query({
-        query: () => ({
-          url: "api/user/profile",
-          method: "GET",
-        }),
+  }),
+  // set of operations we want to perform against the server
+  // two types of endpoints: query and mutation
+  endpoints: (builder) => ({
+    getUserDetails: builder.query({
+      query: () => ({
+        url: "user",
+        method: "GET",
       }),
     }),
   }),

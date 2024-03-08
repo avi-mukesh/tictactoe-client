@@ -135,9 +135,10 @@ input:invalid:not(:placeholder-shown) {
 
 input:focus ~ label,
 input:valid ~ label {
-  top: -10px;
+  top: -12px;
   color: var(--focus);
   font-size: smaller;
+  font-weight: bolder;
 }
 
 .btn {
@@ -170,6 +171,13 @@ a {
     rgb(119, 127, 148) 120.8%
   );
 }
+.btn-danger {
+  background: radial-gradient(
+    371px at 2.9% 14.3%,
+    rgb(255, 0, 102) 0%,
+    rgb(80, 5, 35) 100.7%
+  );
+}
 
 p.validation-error {
   width: 75%;
@@ -184,7 +192,12 @@ p.form-message {
 
 a {
   text-decoration: none;
+  font-weight: bolder;
   color: var(--link);
+}
+
+a:hover {
+  text-decoration: underline;
 }
 
 #spectate-button {

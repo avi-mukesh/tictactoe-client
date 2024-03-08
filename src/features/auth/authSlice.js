@@ -5,7 +5,7 @@ const accessToken = localStorage.getItem("accessToken") || null;
 
 const initialState = {
   loading: false,
-  userInfo: {},
+  userInfo: null,
   accessToken,
   error: null,
   success: false,

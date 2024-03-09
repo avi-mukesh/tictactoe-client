@@ -1,5 +1,5 @@
 // blog.logrocket.com/handling-user-authentication-redux-toolkit/
-
+import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
@@ -55,7 +55,13 @@ export const loginUser = createAsyncThunk(
       );
       console.log("data returned from logging in", data);
       localStorage.setItem("accessToken", data.accessToken);
-      return data;
+
+      const userInfo = {
+        ...jwtDecode(data.accessToken),
+        accessToken: data.accessToken,
+      };
+
+      return userInfo;
     } catch (error) {
       if (error.response && error.response.data.message) {
         return rejectWithValue(error.response.data.message);

@@ -8,7 +8,7 @@ const RequireAuth = () => {
 
   if (!userInfo) {
     return (
-      <div style={{ fontSize: "5rem", color: "red" }}>
+      <div style={{ fontSize: "3rem", color: "red" }}>
         Unauthorized brother!
       </div>
     );

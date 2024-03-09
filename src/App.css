@@ -33,7 +33,7 @@ body {
 }
 
 header {
-  margin-top: 3rem;
+  margin-top: clamp(1rem, 2vh, 2rem);
   text-align: center;
 }
 
@@ -157,6 +157,7 @@ a {
 .btn:hover {
   transform: scale(1.05);
 }
+
 .btn-primary {
   background: radial-gradient(
     circle at 10% 20%,
@@ -177,6 +178,10 @@ a {
     rgb(255, 0, 102) 0%,
     rgb(80, 5, 35) 100.7%
   );
+}
+.btn-disabled {
+  cursor: default;
+  background: grey;
 }
 
 p.validation-error {

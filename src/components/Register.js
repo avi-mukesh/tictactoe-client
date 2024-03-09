@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import Board from "./Board";
-import SpectateButton from "./SpectateButton";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import ValidationError from "./ValidationError";
@@ -23,9 +21,7 @@ const RegistrationSchema = Yup.object().shape({
 });
 
 const Register = () => {
-  const { loading, userInfo, error, success } = useSelector(
-    (state) => state.auth
-  );
+  const { loading, userInfo, success } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
@@ -76,9 +72,9 @@ const Register = () => {
             <ErrorMessage name="confirmPassword" component={ValidationError} />
           )}
           <button
-            className="btn btn-primary"
+            className={`btn btn-primary ${loading ? "btn-disabled" : ""}`}
             type="submit"
-            disabled={isSubmitting}
+            disabled={loading}
           >
             Register
           </button>

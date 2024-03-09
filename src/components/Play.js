@@ -27,12 +27,10 @@ const Play = () => {
 
   useEffect(() => {
     function onConnect() {
-      // console.log("connected");
       setIsConnected(true);
     }
 
     function onDisconnect() {
-      // console.log("disconnected");
       setIsConnected(false);
     }
 

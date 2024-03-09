@@ -3,11 +3,11 @@ import { Field, Form, Formik } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../features/auth/authAction";
+import ValidationError from "./ValidationError";
 
 const Login = () => {
   const { loading, userInfo, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,10 +17,9 @@ const Login = () => {
   }, [navigate, userInfo]);
 
   const onLogin = (values, { setSubmitting }) => {
-    console.log("logging in with these details", values);
     setSubmitting(false);
+    // if logged in successfully, userInfo will be updated, causing the callback in the above useEffect to be run
     dispatch(loginUser(values));
-    navigate("/profile");
   };
 
   return (
@@ -35,10 +34,11 @@ const Login = () => {
             <Field type="password" name="password" required />
             <label htmlFor="password">Password</label>
           </div>
+          {error && <ValidationError>{error}</ValidationError>}
           <button
-            className="btn btn-primary"
+            className={`btn btn-primary ${loading ? "btn-disabled" : ""}`}
             type="submit"
-            disabled={isSubmitting}
+            disabled={loading}
           >
             Login
           </button>

@@ -45,7 +45,7 @@ export const loginUser = createAsyncThunk(
       };
 
       console.log(
-        `trying to login in with username: ${username}, password: ${password}`
+        `trying to log in with username: ${username}, password: ${password}`
       );
 
       const { data } = await axios.post(

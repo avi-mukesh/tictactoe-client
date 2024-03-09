@@ -1,5 +1,5 @@
 export const SquareState = {
   EMPTY: "",
-  CROSS: "X",
-  NOUGHT: "O",
+  CROSSES: "X",
+  NOUGHTS: "O",
 };

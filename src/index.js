@@ -5,16 +5,22 @@ import reportWebVitals from "./reportWebVitals";
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./app/store";
+import { GameProvider } from "./context/GameContext";
+import { PlayerProvider } from "./context/PlayerContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Router>
-        <Routes>
-          <Route path="/*" element={<App />} />
-        </Routes>
-      </Router>
+      <PlayerProvider>
+        <GameProvider>
+          <Router>
+            <Routes>
+              <Route path="/*" element={<App />} />
+            </Routes>
+          </Router>
+        </GameProvider>
+      </PlayerProvider>
     </Provider>
   </React.StrictMode>
 );

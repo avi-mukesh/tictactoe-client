@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { socket } from "../app/socket";
+import Board from "./Board";
+import { usePlayerContext } from "../context/PlayerContext";
 
 const Play = () => {
+  const { setMySymbol } = usePlayerContext();
+
   const { userInfo } = useSelector((state) => state.auth);
 
   const [isConnected, setIsConnected] = useState(false);
@@ -20,8 +24,8 @@ const Play = () => {
   };
 
   const gameStarted = (symbols) => {
-    console.log(symbols);
     console.log("i am ", symbols[socket.id]);
+    setMySymbol(symbols[socket.id]);
     setIsPlaying(true);
   };
 
@@ -42,6 +46,7 @@ const Play = () => {
     return () => {
       socket.off("connect", onConnect);
       socket.off("connect", onDisconnect);
+      socket.off("game_started", gameStarted);
     };
   }, []);
 
@@ -62,7 +67,7 @@ const Play = () => {
           {/* <button className="btn btn-primary">Play a friend</button> */}
         </section>
       )}
-      {isPlaying && <p>Game started!</p>}
+      {isPlaying && <Board />}
     </>
   );
 };

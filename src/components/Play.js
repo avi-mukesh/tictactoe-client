@@ -1,17 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { socket } from "../app/socket";
-import Board from "./Board";
 import { usePlayerContext } from "../context/PlayerContext";
+import useGameState from "../context/GameContext";
+import Game from "./Game";
 
 const Play = () => {
   const { setMySymbol } = usePlayerContext();
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  const [isConnected, setIsConnected] = useState(false);
+  const [setIsConnected] = useState(false);
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const { isMatchedWithOpponent, setIsMatchedWithOpponent } = useGameState();
 
   const joinWaitingRoom = () => {
     setIsInWaitingRoom(true);
@@ -23,11 +24,14 @@ const Play = () => {
     socket.emit("leave_waiting_room", { username: userInfo.username });
   };
 
-  const gameStarted = (symbols) => {
-    console.log("i am ", symbols[socket.id]);
-    setMySymbol(symbols[socket.id]);
-    setIsPlaying(true);
-  };
+  const gameStarted = useCallback(
+    (symbols) => {
+      console.log("i am ", symbols[socket.id]);
+      setMySymbol(symbols[socket.id]);
+      setIsMatchedWithOpponent(true);
+    },
+    [setIsMatchedWithOpponent, setMySymbol]
+  );
 
   useEffect(() => {
     function onConnect() {
@@ -48,11 +52,11 @@ const Play = () => {
       socket.off("connect", onDisconnect);
       socket.off("game_started", gameStarted);
     };
-  }, []);
+  }, [gameStarted, setIsConnected]);
 
   return (
     <>
-      {!isPlaying && (
+      {!isMatchedWithOpponent && (
         <section id="playButtons">
           {!isInWaitingRoom && (
             <button className="btn btn-primary" onClick={joinWaitingRoom}>
@@ -67,7 +71,7 @@ const Play = () => {
           {/* <button className="btn btn-primary">Play a friend</button> */}
         </section>
       )}
-      {isPlaying && <Board />}
+      {isMatchedWithOpponent && <Game />}
     </>
   );
 };

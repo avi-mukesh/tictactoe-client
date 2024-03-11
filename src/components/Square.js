@@ -4,10 +4,10 @@ import { socket } from "../app/socket";
 import useGameState from "../context/GameContext";
 
 export const Square = ({ coordinates }) => {
-  const { boardState, myMove } = useGameState();
+  const { boardState, myMove, isPlaying, isMyTurn } = useGameState();
 
   const isFilled =
-    boardState[coordinates.x][coordinates.y] !== SquareState.EMPTY;
+    boardState[coordinates.y][coordinates.x] !== SquareState.EMPTY;
 
   const handleClick = () => {
     if (!isFilled) {
@@ -19,10 +19,12 @@ export const Square = ({ coordinates }) => {
   return (
     <div
       className="board__square"
-      onClick={handleClick}
-      style={{ cursor: isFilled ? "default" : "pointer" }}
+      onClick={isPlaying && isMyTurn ? handleClick : null}
+      style={{
+        cursor: isPlaying && isMyTurn && !isFilled ? "pointer" : "default",
+      }}
     >
-      {boardState[coordinates.x][coordinates.y]}
+      {boardState[coordinates.y][coordinates.x]}
     </div>
   );
 };

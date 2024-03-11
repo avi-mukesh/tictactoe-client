@@ -1,3 +1,5 @@
+import { GAME_RESULT } from "../util/gameResult";
+
 import { socket } from "../app/socket";
 import { usePlayerContext } from "./PlayerContext";
 
@@ -7,8 +9,12 @@ const { SquareState } = require("../squareState");
 const GameContext = createContext(null);
 
 export const GameProvider = ({ children }) => {
-  const { symbol, opponentSymbol } = usePlayerContext();
+  const [isMatchedWithOpponent, setIsMatchedWithOpponent] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMyTurn, setIsMyTurn] = useState(false);
+  const { mySymbol, opponentSymbol } = usePlayerContext();
   const [lastMoveCoordinates, setLastMoveCoordinates] = useState(null);
+  const [gameResult, setGameResult] = useState(null);
 
   const [boardState, setBoardState] = useState([
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
@@ -17,47 +23,61 @@ export const GameProvider = ({ children }) => {
   ]);
 
   const myMove = (coordinates) => {
-    console.log(
-      `setting ${opponentSymbol} in ${coordinates.x}, ${coordinates.y}`
-    );
     const newBoardState = [...boardState];
-    newBoardState[coordinates.x][coordinates.y] = SquareState[symbol];
+    newBoardState[coordinates.y][coordinates.x] = SquareState[mySymbol];
     setBoardState(newBoardState);
     setLastMoveCoordinates(coordinates);
+    setIsMyTurn(false);
   };
 
   const opponentMadeMove = ({ coordinates }) => {
-    console.log(
-      `setting ${opponentSymbol} in ${coordinates.x}, ${coordinates.y}`
-    );
     const newBoardState = [...boardState];
-    newBoardState[coordinates.x][coordinates.y] = SquareState[opponentSymbol];
+    newBoardState[coordinates.y][coordinates.x] = SquareState[opponentSymbol];
     setBoardState(newBoardState);
     setLastMoveCoordinates(coordinates);
+    setIsMyTurn(true);
   };
 
   useEffect(() => {
     if (lastMoveCoordinates) {
+      console.log("new board state", boardState);
       const { x, y } = lastMoveCoordinates;
       const sameSymbol = (symbol) => {
-        console.log(symbol);
         return symbol === boardState[y][x];
       };
 
       const sameRow = boardState[y].every(sameSymbol);
-
       const sameCol = boardState.map((row) => row[x]).every(sameSymbol);
-
       const sameDiag =
         x === y
           ? boardState.map((row, index) => row[index]).every(sameSymbol)
           : false;
 
-      console.log(`same row: ${sameRow}`);
-      console.log(`same col: ${sameCol}`);
-      console.log(`same diag: ${sameDiag}`);
+      let gameOver = false;
+      if (sameRow || sameCol || sameDiag) {
+        gameOver = true;
+        if (!isMyTurn) {
+          setGameResult(GAME_RESULT.WIN);
+          console.log("i won!!!");
+        } else {
+          setGameResult(GAME_RESULT.LOSS);
+          console.log("opponent won!!!");
+        }
+      } else if (
+        boardState.flat().every((symbol) => symbol !== SquareState.EMPTY)
+      ) {
+        setGameResult(GAME_RESULT.DRAW);
+        gameOver = true;
+        console.log("it is a draw!!!");
+      }
+
+      // setIsPlaying(!gameOver);
     }
-  }, [lastMoveCoordinates, boardState]);
+  }, [lastMoveCoordinates, boardState, isMyTurn]);
+
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [gameResult, setIsPlaying]);
 
   useEffect(() => {
     socket.on("made_move", opponentMadeMove);
@@ -67,11 +87,24 @@ export const GameProvider = ({ children }) => {
   });
 
   return (
-    <GameContext.Provider value={{ boardState, myMove }}>
+    <GameContext.Provider
+      value={{
+        boardState,
+        myMove,
+        isMyTurn,
+        isPlaying,
+        setIsPlaying,
+        setIsMyTurn,
+        setIsMatchedWithOpponent,
+        isMatchedWithOpponent,
+        gameResult,
+      }}
+    >
       {children}
     </GameContext.Provider>
   );
 };
 
 const useGameState = () => useContext(GameContext);
+
 export default useGameState;

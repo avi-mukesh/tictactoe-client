@@ -1,15 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import Row from "./Row";
 import { Square } from "./Square";
-import useGameState from "../context/GameContext";
 
 const Board = () => {
-  const { boardState } = useGameState();
-
-  // useEffect(() => {
-  //   console.log(boardState);
-  // }, []);
-
   return (
     <div className="board">
       <Row>

@@ -280,3 +280,8 @@ ul {
 .nav-button p {
   font-size: 1rem;
 }
+
+.game-container > p {
+  color: var(--light);
+  font-size: 2rem;
+}

@@ -7,8 +7,13 @@
   --error: #f56565;
   --focus: #63b3ed;
   --link: #90cdf4;
+  --turn: #3cba92;
 
   --grey: #707070;
+
+  --win-green: var(--turn);
+  --loss-red: var(--error);
+  --draw-grey: var(--grey);
 }
 
 * {
@@ -281,7 +286,52 @@ ul {
   font-size: 1rem;
 }
 
-.game-container > p {
-  color: var(--light);
+.nav-button > a {
+  display: block;
+}
+
+.game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-turn-message {
   font-size: 2rem;
+  color: whitesmoke;
+  font-weight: 500;
+}
+
+.game-result-message {
+  font-weight: 700;
+}
+
+.game-result-message-win {
+  color: var(--win-green);
+}
+.game-result-message-loss {
+  color: var(--loss-red);
+}
+.game-result-message-draw {
+  color: var(--draw-grey);
+}
+
+.player-card-container {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.player-card {
+  transition: background-color 0.5s;
+  background: var(--dark-transparent);
+  border: 2px solid var(--light);
+  color: var(--light);
+  font-weight: bolder;
+  font-size: 1.2rem;
+  padding: 2rem;
+}
+
+.player-card-turn {
+  background: var(--turn);
 }

@@ -15,6 +15,7 @@ export const GameProvider = ({ children }) => {
   const { mySymbol, opponentSymbol } = usePlayerContext();
   const [lastMoveCoordinates, setLastMoveCoordinates] = useState(null);
   const [gameResult, setGameResult] = useState(null);
+  const [opponentInfo, setOpponentInfo] = useState(null);
 
   const [boardState, setBoardState] = useState([
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
@@ -58,20 +59,15 @@ export const GameProvider = ({ children }) => {
         gameOver = true;
         if (!isMyTurn) {
           setGameResult(GAME_RESULT.WIN);
-          console.log("i won!!!");
         } else {
           setGameResult(GAME_RESULT.LOSS);
-          console.log("opponent won!!!");
         }
       } else if (
         boardState.flat().every((symbol) => symbol !== SquareState.EMPTY)
       ) {
         setGameResult(GAME_RESULT.DRAW);
         gameOver = true;
-        console.log("it is a draw!!!");
       }
-
-      // setIsPlaying(!gameOver);
     }
   }, [lastMoveCoordinates, boardState, isMyTurn]);
 
@@ -81,10 +77,21 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     socket.on("made_move", opponentMadeMove);
+    socket.on("set_opponent_info", setOpponentInfo);
     return () => {
       socket.off("made_move", opponentMadeMove);
+      socket.off("set_opponent_info", setOpponentInfo);
     };
   });
+
+  useEffect(() => {
+    console.log("you are up against", opponentInfo);
+  }, [opponentInfo]);
+
+  const requestRematch = () => {
+    console.log("requesting rematch");
+    socket.emit("request_rematch");
+  };
 
   return (
     <GameContext.Provider
@@ -98,6 +105,8 @@ export const GameProvider = ({ children }) => {
         setIsMatchedWithOpponent,
         isMatchedWithOpponent,
         gameResult,
+        requestRematch,
+        opponentInfo,
       }}
     >
       {children}

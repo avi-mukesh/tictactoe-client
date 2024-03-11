@@ -8,7 +8,7 @@ const RequireAuth = () => {
   if (!userInfo) {
     return (
       <>
-        <div style={{ fontSize: "3rem", color: "red" }}>
+        <div style={{ fontSize: "2.5rem", color: "var(--error)" }}>
           Unauthorized brother!
         </div>
         <Link to="/" className="btn btn-primary">

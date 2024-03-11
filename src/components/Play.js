@@ -24,7 +24,7 @@ const Play = () => {
     socket.emit("leave_waiting_room", { username: userInfo.username });
   };
 
-  const gameStarted = useCallback(
+  const matchedWithOpponent = useCallback(
     (symbols) => {
       console.log("i am ", symbols[socket.id]);
       setMySymbol(symbols[socket.id]);
@@ -32,6 +32,10 @@ const Play = () => {
     },
     [setIsMatchedWithOpponent, setMySymbol]
   );
+
+  const sendPlayerInfo = () => {
+    socket.emit("receive_player_info", { username: userInfo.username });
+  };
 
   useEffect(() => {
     function onConnect() {
@@ -44,15 +48,16 @@ const Play = () => {
 
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
-
-    socket.on("game_started", gameStarted);
+    socket.on("matched_with_opponent", matchedWithOpponent);
+    socket.on("request_player_info", sendPlayerInfo);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("connect", onDisconnect);
-      socket.off("game_started", gameStarted);
+      socket.off("matched_with_opponent", matchedWithOpponent);
+      socket.off("request_player_info", sendPlayerInfo);
     };
-  }, [gameStarted, setIsConnected]);
+  }, [matchedWithOpponent, setIsConnected]);
 
   return (
     <>

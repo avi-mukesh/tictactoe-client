@@ -1,4 +1,5 @@
-const { createContext, useState, useContext } = require("react");
+import { createContext, useState, useContext, useEffect } from "react";
+import { SYMBOL } from "../util/symbol";
 
 const PlayerContext = createContext(null);
 
@@ -8,7 +9,7 @@ export const PlayerProvider = ({ children }) => {
 
   const setMySymbol = (val) => {
     setSymbol(val);
-    setOpponentSymbol(val === "NOUGHTS" ? "CROSSES" : "NOUGHTS");
+    setOpponentSymbol(val === SYMBOL.NOUGHTS ? SYMBOL.CROSSES : SYMBOL.NOUGHTS);
   };
 
   return (

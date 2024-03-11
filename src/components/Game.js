@@ -58,7 +58,7 @@ const Game = () => {
           <button className="btn btn-primary" onClick={requestRematch}>
             Play geeza again
           </button>
-          <Link to="/play" class="btn btn-secondary">
+          <Link to="/play" className="btn btn-secondary">
             Give me a new brudda
           </Link>
         </div>

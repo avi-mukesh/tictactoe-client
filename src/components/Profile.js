@@ -7,7 +7,6 @@ import { logout, setCredentials } from "../features/auth/authSlice";
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-
   const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
     pollingInterval: 900000,
   });
@@ -15,6 +14,10 @@ const Profile = () => {
   useEffect(() => {
     if (data) dispatch(setCredentials(data));
   }, [data, dispatch]);
+
+  useEffect(() => {
+    console.log(userInfo);
+  }, [userInfo]);
 
   const navigate = useNavigate();
   const onLogout = () => {

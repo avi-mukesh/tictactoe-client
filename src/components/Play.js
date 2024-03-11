@@ -4,14 +4,13 @@ import { socket } from "../app/socket";
 import { usePlayerContext } from "../context/PlayerContext";
 import useGameState from "../context/GameContext";
 import Game from "./Game";
-import WaitingForPlayer from "./WaitingForPlayer";
 
 const Play = () => {
   const { setMySymbol } = usePlayerContext();
 
   const { userInfo } = useSelector((state) => state.auth);
 
-  const [setIsConnected] = useState(false);
+  const [isConnected, setIsConnected] = useState(false);
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
   const { isMatchedWithOpponent, setIsMatchedWithOpponent } = useGameState();
 
@@ -38,6 +37,10 @@ const Play = () => {
     socket.emit("receive_player_info", { username: userInfo.username });
   };
 
+  const rematchRequested = () => {
+    console.log("They requested a rematch!");
+  };
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
@@ -51,12 +54,14 @@ const Play = () => {
     socket.on("disconnect", onDisconnect);
     socket.on("matched_with_opponent", matchedWithOpponent);
     socket.on("request_player_info", sendPlayerInfo);
+    socket.on("rematch_requested", rematchRequested);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("connect", onDisconnect);
       socket.off("matched_with_opponent", matchedWithOpponent);
       socket.off("request_player_info", sendPlayerInfo);
+      socket.off("rematch_requested", rematchRequested);
     };
   }, [matchedWithOpponent, setIsConnected]);
 

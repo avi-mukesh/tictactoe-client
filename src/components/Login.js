@@ -24,7 +24,7 @@ const Login = () => {
 
   return (
     <Formik initialValues={{ username: "", password: "" }} onSubmit={onLogin}>
-      {({ isSubmitting }) => (
+      {() => (
         <Form>
           <div className="input-group">
             <Field type="text" name="username" required />

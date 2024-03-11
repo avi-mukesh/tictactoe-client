@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext } from "react";
 import { SYMBOL } from "../util/symbol";
 
 const PlayerContext = createContext(null);

@@ -54,9 +54,7 @@ export const GameProvider = ({ children }) => {
           ? boardState.map((row, index) => row[index]).every(sameSymbol)
           : false;
 
-      let gameOver = false;
       if (sameRow || sameCol || sameDiag) {
-        gameOver = true;
         if (!isMyTurn) {
           setGameResult(GAME_RESULT.WIN);
         } else {
@@ -66,7 +64,6 @@ export const GameProvider = ({ children }) => {
         boardState.flat().every((symbol) => symbol !== SquareState.EMPTY)
       ) {
         setGameResult(GAME_RESULT.DRAW);
-        gameOver = true;
       }
     }
   }, [lastMoveCoordinates, boardState, isMyTurn]);

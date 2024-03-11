@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 const PlayerCard = ({ playerInfo, theirTurn }) => {
   let className = "player-card ";

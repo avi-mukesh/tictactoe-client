@@ -54,12 +54,12 @@ export const loginUser = createAsyncThunk(
         config
       );
       console.log("data returned from logging in", data);
-      localStorage.setItem("accessToken", data.accessToken);
 
       const userInfo = {
         ...jwtDecode(data.accessToken),
         accessToken: data.accessToken,
       };
+      localStorage.setItem("userInfo", JSON.stringify(userInfo));
 
       return userInfo;
     } catch (error) {

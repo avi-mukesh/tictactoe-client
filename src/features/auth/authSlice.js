@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { registerUser, loginUser } from "./authAction";
 
-const accessToken = localStorage.getItem("accessToken") || null;
+const userInfo = localStorage.getItem("userInfo")
+  ? JSON.parse(localStorage.getItem("userInfo"))
+  : null;
 
 const initialState = {
   loading: false,
-  userInfo: null,
-  accessToken,
+  userInfo,
+  accessToken: userInfo?.accessToken || null,
   error: null,
   success: false,
 };
@@ -18,13 +20,14 @@ const authSlice = createSlice({
     // logging out just resets the Redux store to its initial value and clears the token from local storage
     // this isn't an asynchronous task so can create it directly within this slice
     logout: (state) => {
-      localStorage.removeItem("accessToken");
+      localStorage.removeItem("userInfo");
       state.loading = false;
       state.userInfo = null;
       state.accessToken = null;
       state.error = null;
     },
     setCredentials: (state, { payload }) => {
+      console.log("setting user info to", payload);
       state.userInfo = payload;
     },
   },

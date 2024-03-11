@@ -4,6 +4,7 @@ import { socket } from "../app/socket";
 import { usePlayerContext } from "../context/PlayerContext";
 import useGameState from "../context/GameContext";
 import Game from "./Game";
+import WaitingForPlayer from "./WaitingForPlayer";
 
 const Play = () => {
   const { setMySymbol } = usePlayerContext();
@@ -69,9 +70,14 @@ const Play = () => {
             </button>
           )}
           {isInWaitingRoom && (
-            <button className="btn btn-primary" onClick={leaveWaitingRoom}>
-              Cancel
-            </button>
+            <>
+              <p className="message loading-ellipses">
+                Waiting for someone to join
+              </p>
+              <button className="btn btn-primary" onClick={leaveWaitingRoom}>
+                Cancel
+              </button>
+            </>
           )}
           {/* <button className="btn btn-primary">Play a friend</button> */}
         </section>

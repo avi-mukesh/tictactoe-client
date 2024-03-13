@@ -26,7 +26,6 @@ const Play = () => {
 
   const matchedWithOpponent = useCallback(
     (symbols) => {
-      console.log("i am ", symbols[socket.id]);
       setMySymbol(symbols[socket.id]);
       setIsMatchedWithOpponent(true);
     },
@@ -38,6 +37,7 @@ const Play = () => {
   };
 
   const rematchRequested = () => {
+    // setReceivedRematchRequest(true);
     console.log("They requested a rematch!");
   };
 
@@ -54,14 +54,12 @@ const Play = () => {
     socket.on("disconnect", onDisconnect);
     socket.on("matched_with_opponent", matchedWithOpponent);
     socket.on("request_player_info", sendPlayerInfo);
-    socket.on("rematch_requested", rematchRequested);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("connect", onDisconnect);
       socket.off("matched_with_opponent", matchedWithOpponent);
       socket.off("request_player_info", sendPlayerInfo);
-      socket.off("rematch_requested", rematchRequested);
     };
   }, [matchedWithOpponent, setIsConnected]);
 

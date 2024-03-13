@@ -4,7 +4,7 @@ import { socket } from "../app/socket";
 import { usePlayerContext } from "./PlayerContext";
 
 const { createContext, useContext, useState, useEffect } = require("react");
-const { SquareState } = require("../squareState");
+const { SquareState, EmptyBoard } = require("../squareState");
 
 const GameContext = createContext(null);
 
@@ -12,16 +12,30 @@ export const GameProvider = ({ children }) => {
   const [isMatchedWithOpponent, setIsMatchedWithOpponent] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMyTurn, setIsMyTurn] = useState(false);
-  const { mySymbol, opponentSymbol } = usePlayerContext();
+  const { mySymbol, opponentSymbol, reverseSymbols } = usePlayerContext();
   const [lastMoveCoordinates, setLastMoveCoordinates] = useState(null);
   const [gameResult, setGameResult] = useState(null);
   const [opponentInfo, setOpponentInfo] = useState(null);
+  const [rematchRequested, setRematchRequested] = useState(false);
+  const [receivedRematchRequest, setReceivedRematchRequest] = useState(false);
 
   const [boardState, setBoardState] = useState([
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
   ]);
+
+  const resetGameState = () => {
+    setBoardState([
+      [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
+      [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
+      [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
+    ]);
+    setGameResult(null);
+    reverseSymbols();
+    setRematchRequested(false);
+    setReceivedRematchRequest(false);
+  };
 
   const myMove = (coordinates) => {
     const newBoardState = [...boardState];
@@ -41,7 +55,6 @@ export const GameProvider = ({ children }) => {
 
   useEffect(() => {
     if (lastMoveCoordinates) {
-      console.log("new board state", boardState);
       const { x, y } = lastMoveCoordinates;
       const sameSymbol = (symbol) => {
         return symbol === boardState[y][x];
@@ -52,6 +65,8 @@ export const GameProvider = ({ children }) => {
       const sameDiag =
         x === y
           ? boardState.map((row, index) => row[index]).every(sameSymbol)
+          : x == 2 - y
+          ? boardState.map((row, index) => row[2 - index]).every(sameSymbol)
           : false;
 
       if (sameRow || sameCol || sameDiag) {
@@ -66,29 +81,52 @@ export const GameProvider = ({ children }) => {
         setGameResult(GAME_RESULT.DRAW);
       }
     }
-  }, [lastMoveCoordinates, boardState, isMyTurn]);
+  }, [lastMoveCoordinates, isMyTurn]);
 
   useEffect(() => {
-    setIsPlaying(false);
+    if (gameResult) {
+      setIsPlaying(false);
+    }
   }, [gameResult, setIsPlaying]);
 
   useEffect(() => {
     socket.on("made_move", opponentMadeMove);
     socket.on("set_opponent_info", setOpponentInfo);
+    socket.on("rematch_requested", () => setReceivedRematchRequest(true));
+    socket.on("accepted_rematch_request", resetGameState);
     return () => {
       socket.off("made_move", opponentMadeMove);
       socket.off("set_opponent_info", setOpponentInfo);
+      socket.off("rematch_requested");
+      socket.off("accepted_rematch_request", resetGameState);
     };
   });
 
-  useEffect(() => {
-    console.log("you are up against", opponentInfo);
-  }, [opponentInfo]);
-
   const requestRematch = () => {
     console.log("requesting rematch");
+    setRematchRequested(true);
     socket.emit("request_rematch");
   };
+
+  const revokeRematchRequest = () => {
+    console.log("revoking rematch");
+    setRematchRequested(false);
+    socket.emit("revoke_rematch");
+  };
+
+  const acceptRematchRequest = () => {
+    resetGameState();
+    socket.emit("accept_rematch_request");
+    console.log("accepting rematch request");
+  };
+
+  const declineRematchRequest = () => {
+    console.log("declining rematch request");
+  };
+
+  useEffect(() => {
+    console.log("board state is", boardState);
+  }, [boardState]);
 
   return (
     <GameContext.Provider
@@ -102,8 +140,13 @@ export const GameProvider = ({ children }) => {
         setIsMatchedWithOpponent,
         isMatchedWithOpponent,
         gameResult,
-        requestRematch,
         opponentInfo,
+        rematchRequested,
+        requestRematch,
+        revokeRematchRequest,
+        receivedRematchRequest,
+        acceptRematchRequest,
+        declineRematchRequest,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import useGameState from "../context/GameContext";
 import { usePlayerContext } from "../context/PlayerContext";
@@ -17,13 +17,18 @@ const Game = () => {
     setIsMyTurn,
     gameResult,
     setIsPlaying,
+    rematchRequested,
     requestRematch,
+    revokeRematchRequest,
+    receivedRematchRequest,
+    acceptRematchRequest,
+    declineRematchRequest,
     opponentInfo,
   } = useGameState();
 
   const { mySymbol } = usePlayerContext();
+
   useEffect(() => {
-    console.log("GAME STARTED. My symbol is", mySymbol);
     setIsPlaying(true);
     setIsMyTurn(mySymbol === SYMBOL.NOUGHTS);
   }, [mySymbol, setIsMyTurn, setIsPlaying]);
@@ -55,9 +60,17 @@ const Game = () => {
       </article>
       {gameResult && (
         <div>
-          <button className="btn btn-primary" onClick={requestRematch}>
-            Play geeza again
-          </button>
+          {rematchRequested ? (
+            <p className="message loading-ellipsis">Waiting for response...</p>
+          ) : receivedRematchRequest ? (
+            <button className="btn btn-primary" onClick={acceptRematchRequest}>
+              Accept rematch
+            </button>
+          ) : (
+            <button className="btn btn-primary" onClick={requestRematch}>
+              Play geeza again
+            </button>
+          )}
           <Link to="/play" className="btn btn-secondary">
             Give me a new brudda
           </Link>

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const SpectateButton = () => {
   return (
-    <Link id="spectate-button" className="btn btn-secondary">
+    <Link id="spectate-button" to="/spectate" className="btn btn-secondary">
       Spectate
     </Link>
   );

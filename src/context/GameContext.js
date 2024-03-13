@@ -9,6 +9,7 @@ const { SquareState, EmptyBoard } = require("../squareState");
 const GameContext = createContext(null);
 
 export const GameProvider = ({ children }) => {
+  const [gameRoomId, setGameRoomId] = useState(null);
   const [isMatchedWithOpponent, setIsMatchedWithOpponent] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMyTurn, setIsMyTurn] = useState(false);
@@ -26,6 +27,7 @@ export const GameProvider = ({ children }) => {
   ]);
 
   const resetGameState = () => {
+    console.log("starting new game");
     setBoardState([
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
@@ -86,6 +88,19 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     if (gameResult) {
       setIsPlaying(false);
+      if (isMyTurn) {
+        const winner =
+          gameResult === GAME_RESULT.DRAW
+            ? null
+            : GAME_RESULT.LOSS
+            ? opponentInfo.username
+            : "";
+
+        socket.emit("game_ended", {
+          gameRoomId,
+          winner,
+        });
+      }
     }
   }, [gameResult, setIsPlaying]);
 
@@ -105,7 +120,7 @@ export const GameProvider = ({ children }) => {
   const requestRematch = () => {
     console.log("requesting rematch");
     setRematchRequested(true);
-    socket.emit("request_rematch");
+    socket.emit("request_rematch", gameRoomId);
   };
 
   const revokeRematchRequest = () => {
@@ -116,17 +131,13 @@ export const GameProvider = ({ children }) => {
 
   const acceptRematchRequest = () => {
     resetGameState();
-    socket.emit("accept_rematch_request");
+    socket.emit("accept_rematch_request", gameRoomId);
     console.log("accepting rematch request");
   };
 
   const declineRematchRequest = () => {
     console.log("declining rematch request");
   };
-
-  useEffect(() => {
-    console.log("board state is", boardState);
-  }, [boardState]);
 
   return (
     <GameContext.Provider
@@ -139,6 +150,8 @@ export const GameProvider = ({ children }) => {
         setIsMyTurn,
         setIsMatchedWithOpponent,
         isMatchedWithOpponent,
+        gameRoomId,
+        setGameRoomId,
         gameResult,
         opponentInfo,
         rematchRequested,

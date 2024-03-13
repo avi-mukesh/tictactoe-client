@@ -12,7 +12,8 @@ const Play = () => {
 
   const [isConnected, setIsConnected] = useState(false);
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
-  const { isMatchedWithOpponent, setIsMatchedWithOpponent } = useGameState();
+  const { isMatchedWithOpponent, setIsMatchedWithOpponent, setGameRoomId } =
+    useGameState();
 
   const joinWaitingRoom = () => {
     setIsInWaitingRoom(true);
@@ -25,20 +26,16 @@ const Play = () => {
   };
 
   const matchedWithOpponent = useCallback(
-    (symbols) => {
-      setMySymbol(symbols[socket.id]);
+    (data) => {
+      setMySymbol(data.symbols[socket.id]);
       setIsMatchedWithOpponent(true);
+      setGameRoomId(data.roomId);
     },
     [setIsMatchedWithOpponent, setMySymbol]
   );
 
   const sendPlayerInfo = () => {
     socket.emit("receive_player_info", { username: userInfo.username });
-  };
-
-  const rematchRequested = () => {
-    // setReceivedRematchRequest(true);
-    console.log("They requested a rematch!");
   };
 
   useEffect(() => {

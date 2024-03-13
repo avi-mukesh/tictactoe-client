@@ -5,9 +5,13 @@ import useTitle from "./hooks/useTitle";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Play from "./components/Play";
+import Spectate from "./components/Spectate";
 import NotLoggedInSharedLayout from "./components/NotLoggedInSharedLayout";
 import Profile from "./components/Profile";
 import RequireAuth from "./components/RequireAuth";
+import { SpectateProvider } from "./context/SpectateContext";
+import { PlayerProvider } from "./context/PlayerContext";
+import { GameProvider } from "./context/GameContext";
 
 function App() {
   useTitle("Login");
@@ -20,9 +24,26 @@ function App() {
           <Route path="register" element={<Register />} />
         </Route>
         <Route element={<RequireAuth />}>
-          <Route path="/play" element={<Play />} />
+          <Route
+            path="/play"
+            element={
+              <PlayerProvider>
+                <GameProvider>
+                  <Play />
+                </GameProvider>
+              </PlayerProvider>
+            }
+          />
           <Route path="/profile" element={<Profile />} />
         </Route>
+        <Route
+          path="/spectate"
+          element={
+            <SpectateProvider>
+              <Spectate />
+            </SpectateProvider>
+          }
+        />
       </Route>
     </Routes>
   );

@@ -54,10 +54,12 @@ const Game = () => {
         )}
       </div>
       <Board />
-      <article className="player-card-container">
-        <PlayerCard playerInfo={userInfo} theirTurn={isMyTurn} />
-        <PlayerCard playerInfo={opponentInfo} theirTurn={!isMyTurn} />
-      </article>
+      {isPlaying && (
+        <article className="player-card-container">
+          <PlayerCard playerInfo={userInfo} theirTurn={isMyTurn} />
+          <PlayerCard playerInfo={opponentInfo} theirTurn={!isMyTurn} />
+        </article>
+      )}
       {gameResult && (
         <div>
           {rematchRequested ? (

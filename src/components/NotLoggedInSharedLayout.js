@@ -6,7 +6,7 @@ import SpectateButton from "./SpectateButton";
 const NotLoggedInSharedLayout = () => {
   return (
     <>
-      <Board />
+      {/* <Board /> */}
       <section>
         <Outlet />
         <SpectateButton />

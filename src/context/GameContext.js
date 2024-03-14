@@ -33,6 +33,10 @@ export const GameProvider = ({ children }) => {
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
   ]);
 
+  useEffect(() => {
+    console.log("opponent info is", opponentInfo);
+  }, [opponentInfo]);
+
   const resetGameState = () => {
     setBoardState([
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
@@ -55,6 +59,7 @@ export const GameProvider = ({ children }) => {
   };
 
   const opponentMadeMove = ({ coordinates }) => {
+    console.log("opponent made mode", coordinates);
     const newBoardState = [...boardState];
     newBoardState[coordinates.y][coordinates.x] = SquareState[opponentSymbol];
     setBoardState(newBoardState);

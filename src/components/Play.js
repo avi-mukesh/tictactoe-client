@@ -29,13 +29,17 @@ const Play = () => {
     (data) => {
       setMySymbol(data.symbols[socket.id]);
       setIsMatchedWithOpponent(true);
+      console.log("roomId is", data.roomId);
       setGameRoomId(data.roomId);
     },
     [setIsMatchedWithOpponent, setMySymbol]
   );
 
-  const sendPlayerInfo = () => {
-    socket.emit("receive_player_info", { username: userInfo.username });
+  const sendPlayerInfo = ({ gameRoomId }) => {
+    socket.emit("receive_player_info", {
+      user: { username: userInfo.username },
+      gameRoomId,
+    });
   };
 
   useEffect(() => {

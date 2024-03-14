@@ -14,19 +14,20 @@ const Spectate = () => {
     playerInfo,
     setPlayerInfo,
     playerOneTurn,
+    strikeCoordinates,
   } = useSpectate();
 
   return (
     <>
       <p className="message">Spectating</p>
-      <SpectateBoard />
+      <SpectateBoard strikeCoordinates={strikeCoordinates} />
       <article className="player-card-container">
         <PlayerCard
-          playerInfo={playerInfo.playerOne}
+          playerInfo={playerInfo?.playerOne}
           theirTurn={playerOneTurn}
         />
         <PlayerCard
-          playerInfo={playerInfo.playerTwo}
+          playerInfo={playerInfo?.playerTwo}
           theirTurn={!playerOneTurn}
         />
       </article>

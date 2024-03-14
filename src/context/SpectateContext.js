@@ -13,6 +13,7 @@ export const SpectateProvider = ({ children }) => {
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
   ]);
   const [playerOneTurn, setPlayerOneTurn] = useState(null);
+  const [strikeCoordinates, setStrikeCoordinates] = useState(null);
 
   const madeMove = (data) => {
     let symbolToSet;
@@ -28,8 +29,9 @@ export const SpectateProvider = ({ children }) => {
     setBoardState(newBoardState);
   };
 
-  const gameEnded = ({ gameRoomId, winner }) => {
-    console.log("game ended motherfucker");
+  const gameEnded = ({ winner, strikeCoordinates }) => {
+    setStrikeCoordinates(strikeCoordinates);
+    console.log("game ended motherfucker", winner, strikeCoordinates);
   };
 
   useEffect(() => {
@@ -37,8 +39,8 @@ export const SpectateProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    socket.on("receive_ongoing_game_player_info", (info) => {
-      setPlayerInfo(info);
+    socket.on("receive_ongoing_game_player_info", (data) => {
+      setPlayerInfo(data.ongoingGamePlayerInfo);
       setPlayerOneTurn(true);
     });
     socket.on("made_move", madeMove);
@@ -61,6 +63,7 @@ export const SpectateProvider = ({ children }) => {
         playerInfo,
         setPlayerInfo,
         playerOneTurn,
+        strikeCoordinates,
       }}
     >
       {children}

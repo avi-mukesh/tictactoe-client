@@ -136,6 +136,7 @@ export const GameProvider = ({ children }) => {
         socket.emit("game_ended", {
           gameRoomId,
           winner,
+          strikeCoordinates,
         });
       }
     }

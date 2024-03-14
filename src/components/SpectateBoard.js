@@ -1,10 +1,12 @@
 import React from "react";
 import Row from "./Row";
 import SpectateSquare from "./SpectateSquare";
+import Strike from "./Strike";
 
-const SpectateBoard = () => {
+const SpectateBoard = ({ strikeCoordinates }) => {
   return (
     <div className="board">
+      {strikeCoordinates && <Strike strikeCoordinates={strikeCoordinates} />}
       <Row>
         <SpectateSquare coordinates={{ x: 0, y: 0 }} />
         <SpectateSquare coordinates={{ x: 1, y: 0 }} />

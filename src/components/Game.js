@@ -24,6 +24,7 @@ const Game = () => {
     acceptRematchRequest,
     declineRematchRequest,
     opponentInfo,
+    strikeCoordinates,
   } = useGameState();
 
   const { mySymbol } = usePlayerContext();
@@ -53,7 +54,7 @@ const Game = () => {
           </p>
         )}
       </div>
-      <Board />
+      <Board strikeCoordinates={strikeCoordinates} />
       {isPlaying && (
         <article className="player-card-container">
           <PlayerCard playerInfo={userInfo} theirTurn={isMyTurn} />

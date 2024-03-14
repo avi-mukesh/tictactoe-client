@@ -12,21 +12,15 @@ export const SpectateProvider = ({ children }) => {
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
   ]);
+  const [playerOneTurn, setPlayerOneTurn] = useState(null);
 
   const madeMove = (data) => {
-    console.log("player info is", playerInfo);
     let symbolToSet;
     if (playerInfo?.playerOne.username === data.username) {
       symbolToSet = playerInfo?.playerOne.symbol;
     } else {
       symbolToSet = playerInfo?.playerTwo.symbol;
     }
-    console.log(
-      `need to set ${symbolToSet} at ${data.coordinates.x}, ${data.coordinates.y}`
-    );
-
-    console.log("enum", SquareState);
-    console.log("key", symbolToSet);
 
     const newBoardState = [...boardState];
     newBoardState[data.coordinates.y][data.coordinates.x] =
@@ -34,19 +28,26 @@ export const SpectateProvider = ({ children }) => {
     setBoardState(newBoardState);
   };
 
+  const gameEnded = ({ gameRoomId, winner }) => {
+    console.log("game ended motherfucker");
+  };
+
   useEffect(() => {
     socket.emit("spectate_game", { gameRoomId: "game_room" });
   }, []);
 
   useEffect(() => {
-    socket.on("receive_ongoing_game_player_info", (info) =>
-      setPlayerInfo(info)
-    );
+    socket.on("receive_ongoing_game_player_info", (info) => {
+      setPlayerInfo(info);
+      setPlayerOneTurn(true);
+    });
     socket.on("made_move", madeMove);
+    socket.on("game_ended", gameEnded);
 
     return () => {
       socket.off("receive_ongoing_game_info");
       socket.off("made_move", madeMove);
+      socket.off("game_ended", gameEnded);
     };
   });
 
@@ -59,6 +60,7 @@ export const SpectateProvider = ({ children }) => {
         setBoardState,
         playerInfo,
         setPlayerInfo,
+        playerOneTurn,
       }}
     >
       {children}

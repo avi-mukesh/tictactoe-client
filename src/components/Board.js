@@ -1,10 +1,12 @@
 import React from "react";
 import Row from "./Row";
 import { Square } from "./Square";
+import Strike from "./Strike";
 
-const Board = () => {
+const Board = ({ strikeCoordinates }) => {
   return (
     <div className="board">
+      {strikeCoordinates && <Strike strikeCoordinates={strikeCoordinates} />}
       <Row>
         <Square coordinates={{ x: 0, y: 0 }} />
         <Square coordinates={{ x: 1, y: 0 }} />

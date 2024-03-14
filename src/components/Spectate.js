@@ -3,6 +3,7 @@ import useSpectate from "../context/SpectateContext";
 import SpectateBoard from "./SpectateBoard";
 import { socket } from "../app/socket";
 import { SquareState } from "../squareState";
+import PlayerCard from "./PlayerCard";
 
 const Spectate = () => {
   const {
@@ -12,16 +13,23 @@ const Spectate = () => {
     setBoardState,
     playerInfo,
     setPlayerInfo,
+    playerOneTurn,
   } = useSpectate();
 
   return (
     <>
       <p className="message">Spectating</p>
       <SpectateBoard />
-      <div style={{ fontSize: "3rem", color: "orangered" }}>
-        <p>Player 1: {playerInfo?.playerOne?.username}</p>
-        <p>Player 2: {playerInfo?.playerTwo?.username}</p>
-      </div>
+      <article className="player-card-container">
+        <PlayerCard
+          playerInfo={playerInfo.playerOne}
+          theirTurn={playerOneTurn}
+        />
+        <PlayerCard
+          playerInfo={playerInfo.playerTwo}
+          theirTurn={!playerOneTurn}
+        />
+      </article>
     </>
   );
 };

@@ -3,7 +3,13 @@ import { GAME_RESULT } from "../util/gameResult";
 import { socket } from "../app/socket";
 import { usePlayerContext } from "./PlayerContext";
 
-const { createContext, useContext, useState, useEffect } = require("react");
+const {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} = require("react");
 const { SquareState, EmptyBoard } = require("../squareState");
 
 const GameContext = createContext(null);
@@ -19,6 +25,7 @@ export const GameProvider = ({ children }) => {
   const [opponentInfo, setOpponentInfo] = useState(null);
   const [rematchRequested, setRematchRequested] = useState(false);
   const [receivedRematchRequest, setReceivedRematchRequest] = useState(false);
+  const [strikeCoordinates, setStrikeCoordinates] = useState(null);
 
   const [boardState, setBoardState] = useState([
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
@@ -27,7 +34,6 @@ export const GameProvider = ({ children }) => {
   ]);
 
   const resetGameState = () => {
-    console.log("starting new game");
     setBoardState([
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
@@ -37,6 +43,7 @@ export const GameProvider = ({ children }) => {
     reverseSymbols();
     setRematchRequested(false);
     setReceivedRematchRequest(false);
+    setStrikeCoordinates(null);
   };
 
   const myMove = (coordinates) => {
@@ -67,11 +74,41 @@ export const GameProvider = ({ children }) => {
       const sameDiag =
         x === y
           ? boardState.map((row, index) => row[index]).every(sameSymbol)
-          : x == 2 - y
+          : x === 2 - y
           ? boardState.map((row, index) => row[2 - index]).every(sameSymbol)
           : false;
 
+      let startCoords = { x: 0, y: 0 };
+      let endCoords = { x: 0, y: 0 };
+
       if (sameRow || sameCol || sameDiag) {
+        if (sameRow) {
+          startCoords.x = 0;
+          startCoords.y = y;
+          endCoords.x = 2;
+          endCoords.y = y;
+        } else if (sameCol) {
+          startCoords.x = x;
+          startCoords.y = 0;
+          endCoords.x = x;
+          endCoords.y = 2;
+        } else if (sameDiag) {
+          startCoords.y = 0;
+          endCoords.y = 2;
+          if (boardState[0][0] === boardState[2][2]) {
+            startCoords.x = 0;
+            endCoords.x = 2;
+          } else {
+            startCoords.x = 2;
+            endCoords.x = 0;
+          }
+        }
+
+        console.log("start coords", startCoords);
+        console.log("end coords", endCoords);
+
+        setStrikeCoordinates({ startCoords, endCoords });
+
         if (!isMyTurn) {
           setGameResult(GAME_RESULT.WIN);
         } else {
@@ -160,6 +197,7 @@ export const GameProvider = ({ children }) => {
         receivedRematchRequest,
         acceptRematchRequest,
         declineRematchRequest,
+        strikeCoordinates,
       }}
     >
       {children}

@@ -33,9 +33,10 @@ export const GameProvider = ({ children }) => {
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
   ]);
 
-  useEffect(() => {
-    console.log("opponent info is", opponentInfo);
-  }, [opponentInfo]);
+  const startNewGame = (newGameRoomId) => {
+    resetGameState();
+    setGameRoomId(newGameRoomId);
+  };
 
   const resetGameState = () => {
     setBoardState([
@@ -59,7 +60,6 @@ export const GameProvider = ({ children }) => {
   };
 
   const opponentMadeMove = ({ coordinates }) => {
-    console.log("opponent made mode", coordinates);
     const newBoardState = [...boardState];
     newBoardState[coordinates.y][coordinates.x] = SquareState[opponentSymbol];
     setBoardState(newBoardState);
@@ -109,9 +109,6 @@ export const GameProvider = ({ children }) => {
           }
         }
 
-        console.log("start coords", startCoords);
-        console.log("end coords", endCoords);
-
         setStrikeCoordinates({ startCoords, endCoords });
 
         if (!isMyTurn) {
@@ -151,36 +148,37 @@ export const GameProvider = ({ children }) => {
     socket.on("made_move", opponentMadeMove);
     socket.on("set_opponent_info", setOpponentInfo);
     socket.on("rematch_requested", () => setReceivedRematchRequest(true));
-    socket.on("accepted_rematch_request", resetGameState);
+    socket.on("accepted_rematch_request", startNewGame);
+    socket.on("new_game_room_id", setGameRoomId);
     return () => {
       socket.off("made_move", opponentMadeMove);
       socket.off("set_opponent_info", setOpponentInfo);
       socket.off("rematch_requested");
-      socket.off("accepted_rematch_request", resetGameState);
+      socket.off("accepted_rematch_request", startNewGame);
+      socket.off("new_game_room_id", setGameRoomId);
     };
   });
 
+  useEffect(() => {
+    console.log(`new game room id: ${gameRoomId}`);
+  }, [gameRoomId]);
+
   const requestRematch = () => {
-    console.log("requesting rematch");
     setRematchRequested(true);
     socket.emit("request_rematch", gameRoomId);
   };
 
   const revokeRematchRequest = () => {
-    console.log("revoking rematch");
     setRematchRequested(false);
     socket.emit("revoke_rematch");
   };
 
   const acceptRematchRequest = () => {
     resetGameState();
-    socket.emit("accept_rematch_request", gameRoomId);
-    console.log("accepting rematch request");
+    socket.emit("accept_rematch_request", { gameRoomId });
   };
 
-  const declineRematchRequest = () => {
-    console.log("declining rematch request");
-  };
+  const declineRematchRequest = () => {};
 
   return (
     <GameContext.Provider

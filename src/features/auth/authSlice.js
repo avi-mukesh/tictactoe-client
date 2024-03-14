@@ -27,7 +27,6 @@ const authSlice = createSlice({
       state.error = null;
     },
     setCredentials: (state, { payload }) => {
-      console.log("setting user info to", payload);
       state.userInfo = payload;
     },
   },
@@ -49,7 +48,6 @@ const authSlice = createSlice({
       state.error = null;
     });
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
-      console.log("payload after logging in", payload);
       state.loading = false;
       state.userInfo = payload;
       state.accessToken = payload.accessToken;

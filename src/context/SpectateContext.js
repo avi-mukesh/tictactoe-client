@@ -13,45 +13,42 @@ export const SpectateProvider = ({ children }) => {
     [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
   ]);
 
-  useEffect(() => {
-    console.log("player info", playerInfo);
-  }, [playerInfo]);
+  const madeMove = (data) => {
+    console.log("player info is", playerInfo);
+    let symbolToSet;
+    if (playerInfo?.playerOne.username === data.username) {
+      symbolToSet = playerInfo?.playerOne.symbol;
+    } else {
+      symbolToSet = playerInfo?.playerTwo.symbol;
+    }
+    console.log(
+      `need to set ${symbolToSet} at ${data.coordinates.x}, ${data.coordinates.y}`
+    );
 
-  useEffect(() => {
-    console.log("board state", boardState);
-  }, [boardState]);
+    console.log("enum", SquareState);
+    console.log("key", symbolToSet);
+
+    const newBoardState = [...boardState];
+    newBoardState[data.coordinates.y][data.coordinates.x] =
+      SquareState[symbolToSet];
+    setBoardState(newBoardState);
+  };
 
   useEffect(() => {
     socket.emit("spectate_game", { gameRoomId: "game_room" });
+  }, []);
 
+  useEffect(() => {
     socket.on("receive_ongoing_game_player_info", (info) =>
       setPlayerInfo(info)
     );
-    socket.on("made_move", (data) => {
-      let symbolToSet;
-      if (playerInfo?.playerOne.username === data.username) {
-        symbolToSet = playerInfo?.playerOne.symbol;
-      } else {
-        symbolToSet = playerInfo?.playerTwo.symbol;
-      }
-      console.log(
-        `need to set ${symbolToSet} at ${data.coordinates.x}, ${data.coordinates.y}`
-      );
-
-      console.log("enum", SquareState);
-      console.log("key", symbolToSet);
-
-      const newBoardState = [...boardState];
-      newBoardState[data.coordinates.y][data.coordinates.x] =
-        SquareState[symbolToSet];
-      setBoardState(newBoardState);
-    });
+    socket.on("made_move", madeMove);
 
     return () => {
       socket.off("receive_ongoing_game_info");
-      socket.off("made_move");
+      socket.off("made_move", madeMove);
     };
-  }, []);
+  });
 
   return (
     <SpectateContext.Provider

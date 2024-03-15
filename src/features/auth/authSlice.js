@@ -49,6 +49,7 @@ const authSlice = createSlice({
     });
     builder.addCase(loginUser.fulfilled, (state, { payload }) => {
       state.loading = false;
+      state.success = true;
       state.userInfo = payload;
       state.accessToken = payload.accessToken;
     });

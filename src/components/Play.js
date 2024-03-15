@@ -66,6 +66,7 @@ const Play = () => {
 
   return (
     <>
+      <h2>Play</h2>
       {!isMatchedWithOpponent && (
         <section id="playButtons">
           {!isInWaitingRoom && (

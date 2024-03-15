@@ -9,7 +9,7 @@ const Navbar = () => {
     <footer className="footer">
       <nav className="nav">
         <ul>
-          <NavButton linkTo="/spectate">
+          <NavButton linkTo="/ongoing-games">
             <FontAwesomeIcon icon={faEye} />
             <p>Spectate</p>
           </NavButton>

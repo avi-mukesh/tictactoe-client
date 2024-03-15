@@ -35,8 +35,8 @@ export const SpectateProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    socket.emit("spectate_game", { gameRoomId: "game_room" });
-  }, []);
+    socket.emit("spectate_game", { gameRoomId: gameRoomId });
+  }, [gameRoomId]);
 
   useEffect(() => {
     socket.on("receive_ongoing_game_player_info", (data) => {

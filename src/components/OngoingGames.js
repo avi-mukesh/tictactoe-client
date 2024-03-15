@@ -19,9 +19,12 @@ const OngoingGames = () => {
     data: ongoingGames,
     error,
     isLoading,
-  } = useGetOngoingGamesQuery(undefined, {
-    pollingInterval: 10000,
-  });
+  } = useGetOngoingGamesQuery(
+    undefined
+    // {
+    // pollingInterval: 10000,
+    // }
+  );
 
   return (
     <>
@@ -29,15 +32,19 @@ const OngoingGames = () => {
       {isLoading ? (
         <p className="loading-ellipses">Loading</p>
       ) : error ? (
-        <p>Something went wrong</p>
+        <p className="message">Something went wrong</p>
       ) : (
         <>
-          <p>Ongoing Games</p>
-          <section className="ongoing-games">
-            {ongoingGames.map((game) => (
-              <OngoingGameCard key={game._id} game={game} />
-            ))}
-          </section>
+          <h3>Ongoing Games</h3>
+          {ongoingGames.length === 0 ? (
+            <p className="message">No games to show</p>
+          ) : (
+            <section className="ongoing-games">
+              {ongoingGames.map((game) => (
+                <OngoingGameCard key={game._id} game={game} />
+              ))}
+            </section>
+          )}
         </>
       )}
     </>

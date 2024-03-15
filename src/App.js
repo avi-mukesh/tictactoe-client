@@ -39,7 +39,7 @@ function App() {
         </Route>
         <Route path="ongoing-games" element={<OngoingGames />} />
         <Route
-          path="/spectate"
+          path="/spectate/:roomId"
           element={
             <SpectateProvider>
               <Spectate />

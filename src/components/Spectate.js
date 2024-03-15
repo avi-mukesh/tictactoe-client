@@ -1,8 +1,7 @@
 import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import useSpectate from "../context/SpectateContext";
 import SpectateBoard from "./SpectateBoard";
-import { socket } from "../app/socket";
-import { SquareState } from "../squareState";
 import PlayerCard from "./PlayerCard";
 
 const Spectate = () => {
@@ -16,6 +15,12 @@ const Spectate = () => {
     playerOneTurn,
     strikeCoordinates,
   } = useSpectate();
+
+  const { roomId } = useParams();
+
+  useEffect(() => {
+    setGameRoomId(roomId);
+  }, [setGameRoomId, roomId]);
 
   return (
     <>

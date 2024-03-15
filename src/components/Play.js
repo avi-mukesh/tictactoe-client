@@ -32,7 +32,7 @@ const Play = () => {
       console.log("roomId is", data.roomId);
       setGameRoomId(data.roomId);
     },
-    [setIsMatchedWithOpponent, setMySymbol]
+    [setIsMatchedWithOpponent, setMySymbol, setGameRoomId]
   );
 
   const sendPlayerInfo = ({ gameRoomId }) => {

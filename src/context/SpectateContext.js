@@ -1,6 +1,7 @@
 import { useContext, useState, createContext, useEffect } from "react";
 import { SquareState } from "../squareState";
 import { socket } from "../app/socket";
+import { useNavigate } from "react-router-dom";
 
 const SpectateContext = createContext(null);
 
@@ -15,6 +16,8 @@ export const SpectateProvider = ({ children }) => {
   const [playerOneTurn, setPlayerOneTurn] = useState(null);
   const [strikeCoordinates, setStrikeCoordinates] = useState(null);
 
+  const navigate = useNavigate();
+
   const madeMove = (data) => {
     let symbolToSet;
     if (playerInfo?.playerOne.username === data.username) {
@@ -22,11 +25,17 @@ export const SpectateProvider = ({ children }) => {
     } else {
       symbolToSet = playerInfo?.playerTwo.symbol;
     }
+    console.log(playerInfo);
 
     const newBoardState = [...boardState];
     newBoardState[data.coordinates.y][data.coordinates.x] =
       SquareState[symbolToSet];
     setBoardState(newBoardState);
+  };
+
+  const handleInvalidGameRoom = () => {
+    // navigate("/ongoing-games");
+    setGameRoomId(null);
   };
 
   const gameEnded = ({ winner, strikeCoordinates }) => {
@@ -35,7 +44,9 @@ export const SpectateProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    socket.emit("spectate_game", { gameRoomId: gameRoomId });
+    if (gameRoomId) {
+      socket.emit("spectate_game", { gameRoomId: gameRoomId });
+    }
   }, [gameRoomId]);
 
   useEffect(() => {
@@ -43,13 +54,18 @@ export const SpectateProvider = ({ children }) => {
       setPlayerInfo(data.ongoingGamePlayerInfo);
       setPlayerOneTurn(true);
     });
+    socket.on("receive_ongoing_game_boardstate", (data) => {
+      setBoardState(data.ongoingGameBoardState);
+    });
     socket.on("made_move", madeMove);
     socket.on("game_ended", gameEnded);
-
+    socket.on("invalid_game_room", handleInvalidGameRoom);
     return () => {
-      socket.off("receive_ongoing_game_info");
+      socket.off("receive_ongoing_game_player_info");
+      socket.off("receive_ongoing_game_boardstate");
       socket.off("made_move", madeMove);
       socket.off("game_ended", gameEnded);
+      socket.off("invalid_game_room", handleInvalidGameRoom);
     };
   });
 

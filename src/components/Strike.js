@@ -3,6 +3,9 @@ import React from "react";
 const Strike = ({ strikeCoordinates }) => {
   const startCoords = strikeCoordinates.startCoords;
   const endCoords = strikeCoordinates.endCoords;
+
+  console.log(startCoords);
+  console.log(endCoords);
   // const startCoords = { x: 2, y: 0 };
   // const endCoords = { x: 0, y: 2 };
 

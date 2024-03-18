@@ -25,6 +25,7 @@ const Game = () => {
     declineRematchRequest,
     opponentInfo,
     strikeCoordinates,
+    resetGameState,
   } = useGameState();
 
   const { mySymbol } = usePlayerContext();
@@ -74,7 +75,11 @@ const Game = () => {
               Play geeza again
             </button>
           )}
-          <Link to="/play" className="btn btn-secondary">
+          <Link
+            to="/play"
+            className="btn btn-secondary"
+            onClick={resetGameState}
+          >
             Give me a new brudda
           </Link>
         </div>

@@ -26,7 +26,7 @@ function App() {
         </Route>
         <Route element={<RequireAuth />}>
           <Route
-            path="/play"
+            path="/play/:roomId?"
             element={
               <PlayerProvider>
                 <GameProvider>

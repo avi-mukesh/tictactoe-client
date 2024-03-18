@@ -49,6 +49,7 @@ export const GameProvider = ({ children }) => {
     setRematchRequested(false);
     setReceivedRematchRequest(false);
     setStrikeCoordinates(null);
+    setGameRoomId(null);
   };
 
   const myMove = (coordinates) => {
@@ -100,7 +101,10 @@ export const GameProvider = ({ children }) => {
         } else if (sameDiag) {
           startCoords.y = 0;
           endCoords.y = 2;
-          if (boardState[0][0] === boardState[2][2]) {
+          if (
+            boardState[0][0] === boardState[2][2] &&
+            boardState[1][1] === boardState[0][0]
+          ) {
             startCoords.x = 0;
             endCoords.x = 2;
           } else {
@@ -202,6 +206,7 @@ export const GameProvider = ({ children }) => {
         acceptRematchRequest,
         declineRematchRequest,
         strikeCoordinates,
+        resetGameState,
       }}
     >
       {children}

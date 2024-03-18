@@ -4,8 +4,13 @@ import { socket } from "../app/socket";
 import { usePlayerContext } from "../context/PlayerContext";
 import useGameState from "../context/GameContext";
 import Game from "./Game";
+import { useParams } from "react-router-dom";
 
 const Play = () => {
+  // TODO: carry on from here
+  const { roomId } = useParams();
+  console.log(roomId);
+
   const { setMySymbol } = usePlayerContext();
 
   const { userInfo } = useSelector((state) => state.auth);
@@ -14,6 +19,15 @@ const Play = () => {
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
   const { isMatchedWithOpponent, setIsMatchedWithOpponent, setGameRoomId } =
     useGameState();
+
+  useEffect(() => {
+    if (roomId) {
+      socket.emit("join_custom_game_room", {
+        username: userInfo.username,
+        roomId,
+      });
+    }
+  }, [userInfo.username, roomId]);
 
   const joinWaitingRoom = () => {
     setIsInWaitingRoom(true);
@@ -42,6 +56,14 @@ const Play = () => {
     });
   };
 
+  const createGameRoom = () => {
+    socket.emit("create_custom_game_room", userInfo.username);
+  };
+
+  const customGameRoomCreated = (roomId) => {
+    console.log(`http://localhost:3000/play/${roomId}`);
+  };
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
@@ -55,12 +77,14 @@ const Play = () => {
     socket.on("disconnect", onDisconnect);
     socket.on("matched_with_opponent", matchedWithOpponent);
     socket.on("request_player_info", sendPlayerInfo);
+    socket.on("custom_game_room_created", customGameRoomCreated);
 
     return () => {
       socket.off("connect", onConnect);
       socket.off("connect", onDisconnect);
       socket.off("matched_with_opponent", matchedWithOpponent);
       socket.off("request_player_info", sendPlayerInfo);
+      socket.off("custom_game_room_created", customGameRoomCreated);
     };
   }, [matchedWithOpponent, setIsConnected]);
 
@@ -70,9 +94,14 @@ const Play = () => {
       {!isMatchedWithOpponent && (
         <section id="playButtons">
           {!isInWaitingRoom && (
-            <button className="btn btn-primary" onClick={joinWaitingRoom}>
-              Play a stranger
-            </button>
+            <>
+              <button className="btn btn-primary" onClick={joinWaitingRoom}>
+                Play a stranger
+              </button>
+              <button className="btn btn-primary" onClick={createGameRoom}>
+                Play a friend
+              </button>
+            </>
           )}
           {isInWaitingRoom && (
             <>
@@ -84,7 +113,6 @@ const Play = () => {
               </button>
             </>
           )}
-          {/* <button className="btn btn-primary">Play a friend</button> */}
         </section>
       )}
       {isMatchedWithOpponent && <Game />}

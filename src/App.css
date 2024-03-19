@@ -5,15 +5,20 @@
   --light-transparent: rgba(245, 245, 245, 0.6);
   --grid-line-color: rgba(105, 105, 105, 0);
 
-  --error: #f56565;
+  --error: rgb(245, 101, 101);
   --focus: #63b3ed;
   --link: #90cdf4;
-  --turn: #3cba92;
+  --turn: rgb(60, 186, 146);
+
+  --green: #3cba92;
+  --purple: rgb(182, 109, 246);
 
   --grey: #707070;
 
   --win-green: var(--turn);
+  --win-green-transparent: rgba(60, 186, 146, 0.75);
   --loss-red: var(--error);
+  --loss-red-transparent: rgba(245, 101, 101, 0.75);
   --draw-grey: var(--grey);
 }
 
@@ -238,6 +243,13 @@ a {
   background: grey;
 }
 
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
 p.validation-error {
   width: 75%;
   text-align: end;
@@ -399,10 +411,35 @@ ul {
   font-size: 1.6rem;
   color: whitesmoke;
   font-weight: 500;
+  margin: 5px 0;
 }
 
 .message-error {
   color: var(--error);
+}
+
+.message-smaller {
+  font-size: 1.2rem;
+}
+
+.message-link {
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--purple);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.message-link > span {
+  margin: 5px;
+  margin-left: 10px;
+}
+
+.purple-text {
+  color: var(--purple);
+}
+.green-text {
+  color: var(--green);
 }
 
 @keyframes ellipsis {
@@ -451,4 +488,46 @@ ul {
 .ongoing-games-player-card > span {
   font-size: 1.3rem;
   font-weight: 600;
+}
+
+#previous-games-container {
+  margin: 1rem 0;
+  border: 1px solid var(--light);
+  border-radius: 10px;
+}
+
+.previous-games {
+  margin: 1rem 0;
+  max-height: 80vh;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.previous-games article {
+  max-width: 80%;
+  display: flex;
+  gap: 3vw;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.previous-games article > p {
+  font-size: 1.2rem;
+  color: var(--light);
+}
+
+.previous-game-player-info {
+  padding: 1rem;
+  border-radius: 15px;
+  border: 1px solid var(--light);
+  color: var(--light);
+}
+
+.win {
+  background-color: var(--win-green-transparent);
+}
+.loss {
+  background-color: var(--loss-red-transparent);
 }

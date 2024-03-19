@@ -3,21 +3,23 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetUserDetailsQuery } from "../app/services/auth/authService";
 import { logout, setCredentials } from "../features/auth/authSlice";
+import { useGetPreviousGamesQuery } from "../app/services/game/gameService";
+import PreviousGame from "./PreviousGame";
 
 const Profile = () => {
   const { userInfo } = useSelector((state) => state.auth);
+  const {
+    data: previousGames,
+    isLoading,
+    isSuccess,
+    isError,
+  } = useGetPreviousGamesQuery(userInfo.username);
+
+  useEffect(() => {
+    console.log("previous games:", previousGames);
+  }, [previousGames]);
+
   const dispatch = useDispatch();
-  const { data, isFetching } = useGetUserDetailsQuery("userDetails", {
-    pollingInterval: 900000,
-  });
-
-  useEffect(() => {
-    if (data) dispatch(setCredentials(data));
-  }, [data, dispatch]);
-
-  useEffect(() => {
-    console.log(userInfo);
-  }, [userInfo]);
 
   const navigate = useNavigate();
   const onLogout = () => {
@@ -27,18 +29,28 @@ const Profile = () => {
 
   return (
     <>
-      <div style={{ fontSize: "3rem" }}>
-        {isFetching
-          ? "Fetching your profile"
-          : userInfo !== null
-          ? `Logged in! Welcome ${userInfo.username}`
-          : "You're not logged in"}
-      </div>
-      <div>
-        <button className="btn btn-danger" onClick={onLogout}>
-          Log out
-        </button>
-      </div>
+      <h2>Welcome, {userInfo.username}</h2>
+      <section id="profile">
+        <div id="previous-games-container">
+          <h3>Previous games</h3>
+          {isLoading ? (
+            <p className="message loading-ellipses">Loading</p>
+          ) : (
+            <section className="previous-games">
+              {previousGames.map((prevGame) => (
+                <PreviousGame game={prevGame} key={prevGame._id} />
+              ))}
+            </section>
+          )}
+        </div>
+
+        <div className="button-container">
+          <button className="btn btn-secondary">Reset password</button>
+          <button className="btn btn-danger" onClick={onLogout}>
+            Log out
+          </button>
+        </div>
+      </section>
     </>
   );
 };

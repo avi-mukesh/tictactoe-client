@@ -10,7 +10,7 @@ export const authApi = createApi({
   // basequery is used by each defined endpoint if the queryFn parameters is not specified
   // fetchBaseQuery is a wrapper around the fetch API
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://locahost:3001/",
+    baseUrl: "http://localhost:3001/",
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.accessToken;
       if (token) {
@@ -23,8 +23,8 @@ export const authApi = createApi({
   // two types of endpoints: query and mutation
   endpoints: (builder) => ({
     getUserDetails: builder.query({
-      query: () => ({
-        url: "user",
+      query: (id) => ({
+        url: `user/${id}`,
         method: "GET",
       }),
     }),

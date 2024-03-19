@@ -12,7 +12,13 @@ export const gameApi = createApi({
         method: "GET",
       }),
     }),
+    getPreviousGames: builder.query({
+      query: (username) => ({
+        url: `game/previous?username=${username}`,
+        method: "GET",
+      }),
+    }),
   }),
 });
 
-export const { useGetOngoingGamesQuery } = gameApi;
+export const { useGetOngoingGamesQuery, useGetPreviousGamesQuery } = gameApi;

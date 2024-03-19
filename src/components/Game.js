@@ -26,9 +26,15 @@ const Game = () => {
     opponentInfo,
     strikeCoordinates,
     resetGameState,
+    setIsMatchedWithOpponent,
   } = useGameState();
 
   const { mySymbol } = usePlayerContext();
+
+  const backToPlayMainPage = () => {
+    resetGameState();
+    setIsMatchedWithOpponent(false);
+  };
 
   useEffect(() => {
     setIsPlaying(true);
@@ -78,7 +84,7 @@ const Game = () => {
           <Link
             to="/play"
             className="btn btn-secondary"
-            onClick={resetGameState}
+            onClick={backToPlayMainPage}
           >
             Give me a new brudda
           </Link>

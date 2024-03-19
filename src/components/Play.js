@@ -5,8 +5,13 @@ import { usePlayerContext } from "../context/PlayerContext";
 import useGameState from "../context/GameContext";
 import Game from "./Game";
 import { useParams } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 
 const Play = () => {
+  const [customRoomLink, setCustomRoomLink] = useState();
+  const [copiedCustomRoomLink, setCopiedCustomRoomLink] = useState(false);
+
   // TODO: carry on from here
   const { roomId } = useParams();
   console.log(roomId);
@@ -29,6 +34,11 @@ const Play = () => {
     }
   }, [userInfo.username, roomId]);
 
+  const copyCustomGameRoomLink = () => {
+    setCopiedCustomRoomLink(true);
+    navigator.clipboard.writeText(customRoomLink);
+  };
+
   const joinWaitingRoom = () => {
     setIsInWaitingRoom(true);
     socket.emit("join_waiting_room", { username: userInfo.username });
@@ -41,6 +51,7 @@ const Play = () => {
 
   const matchedWithOpponent = useCallback(
     (data) => {
+      setIsInWaitingRoom(false);
       setMySymbol(data.symbols[socket.id]);
       setIsMatchedWithOpponent(true);
       console.log("roomId is", data.roomId);
@@ -57,11 +68,12 @@ const Play = () => {
   };
 
   const createGameRoom = () => {
+    setCopiedCustomRoomLink(null);
     socket.emit("create_custom_game_room", userInfo.username);
   };
 
   const customGameRoomCreated = (roomId) => {
-    console.log(`http://localhost:3000/play/${roomId}`);
+    setCustomRoomLink(`http://localhost:3000/play/${roomId}`);
   };
 
   useEffect(() => {
@@ -86,22 +98,22 @@ const Play = () => {
       socket.off("request_player_info", sendPlayerInfo);
       socket.off("custom_game_room_created", customGameRoomCreated);
     };
-  }, [matchedWithOpponent, setIsConnected]);
+  }, [matchedWithOpponent, sendPlayerInfo, setIsConnected]);
 
   return (
     <>
       <h2>Play</h2>
       {!isMatchedWithOpponent && (
         <section id="playButtons">
-          {!isInWaitingRoom && (
-            <>
+          {!isInWaitingRoom && !customRoomLink && (
+            <div className="button-container">
               <button className="btn btn-primary" onClick={joinWaitingRoom}>
                 Play a stranger
               </button>
               <button className="btn btn-primary" onClick={createGameRoom}>
                 Play a friend
               </button>
-            </>
+            </div>
           )}
           {isInWaitingRoom && (
             <>
@@ -111,6 +123,32 @@ const Play = () => {
               <button className="btn btn-primary" onClick={leaveWaitingRoom}>
                 Cancel
               </button>
+            </>
+          )}
+          {customRoomLink && (
+            <>
+              <p className="message message-smaller">
+                Share this link with your friend!
+              </p>
+              <p
+                className="message message-link"
+                onClick={copyCustomGameRoomLink}
+              >
+                {customRoomLink}
+                <span
+                  className={
+                    copiedCustomRoomLink ? "green-text" : "purple-text"
+                  }
+                >
+                  {copiedCustomRoomLink ? (
+                    <>
+                      <FontAwesomeIcon icon={faCheck} /> Copied!
+                    </>
+                  ) : (
+                    <FontAwesomeIcon icon={faCopy} />
+                  )}
+                </span>
+              </p>
             </>
           )}
         </section>

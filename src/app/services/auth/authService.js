@@ -1,4 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { API_BASE } from "../../../util/apiUrl";
 
 // this method is the core of RTK Query's functionalit
 // lets you define a set of "endpoints" that describe how to retrieve data from backend APIs
@@ -10,7 +11,7 @@ export const authApi = createApi({
   // basequery is used by each defined endpoint if the queryFn parameters is not specified
   // fetchBaseQuery is a wrapper around the fetch API
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:3001/",
+    baseUrl: `${API_BASE}/`,
     prepareHeaders: (headers, { getState }) => {
       const token = getState().auth.accessToken;
       if (token) {

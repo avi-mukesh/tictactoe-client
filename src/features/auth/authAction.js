@@ -2,8 +2,7 @@
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-
-const backendURL = "http://localhost:3001";
+import { API_BASE } from "../../util/apiUrl";
 
 // 2 arguments: string action type and callback function
 export const registerUser = createAsyncThunk(
@@ -49,7 +48,7 @@ export const loginUser = createAsyncThunk(
       );
 
       const { data } = await axios.post(
-        `${backendURL}/auth/login`,
+        `${API_BASE}/auth/login`,
         { username, password },
         config
       );

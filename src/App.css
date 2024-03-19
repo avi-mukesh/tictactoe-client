@@ -490,6 +490,11 @@ ul {
   font-weight: 600;
 }
 
+section#profile {
+  display: flex;
+  flex-direction: column;
+}
+
 #previous-games-container {
   margin: 1rem 0;
   border: 1px solid var(--light);

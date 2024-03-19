@@ -3,14 +3,8 @@ import { GAME_RESULT } from "../util/gameResult";
 import { socket } from "../app/socket";
 import { usePlayerContext } from "./PlayerContext";
 
-const {
-  createContext,
-  useContext,
-  useState,
-  useEffect,
-  useCallback,
-} = require("react");
-const { SquareState, EmptyBoard } = require("../squareState");
+const { createContext, useContext, useState, useEffect } = require("react");
+const { SquareState } = require("../util/squareState");
 
 const GameContext = createContext(null);
 

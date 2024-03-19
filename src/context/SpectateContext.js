@@ -1,5 +1,5 @@
 import { useContext, useState, createContext, useEffect } from "react";
-import { SquareState } from "../squareState";
+import { SquareState } from "../util/squareState";
 import { socket } from "../app/socket";
 import { useNavigate } from "react-router-dom";
 

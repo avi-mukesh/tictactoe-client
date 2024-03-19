@@ -1,5 +1,5 @@
 import React from "react";
-import { SquareState } from "../squareState";
+import { SquareState } from "../util/squareState";
 import { socket } from "../app/socket";
 import useGameState from "../context/GameContext";
 import { useSelector } from "react-redux";

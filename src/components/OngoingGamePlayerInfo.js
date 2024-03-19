@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { useGetUserQuery } from "../app/services/user/userService";
 import { combineSlices } from "@reduxjs/toolkit";
-import { SquareState } from "../squareState";
+import { SquareState } from "../util/squareState";
 
 const OngoingGamePlayerInfo = ({ playerId, symbol }) => {
   const { data: player, isLoading, error } = useGetUserQuery(playerId);

@@ -1,8 +1,8 @@
 import React from "react";
-import { useGetUserDetailsQuery } from "../app/services/auth/authService";
+import { useGetUserQuery } from "../app/services/user/userService";
 
 const PreviousGamePlayerInfo = ({ playerId, result }) => {
-  const { data: user, isSuccess } = useGetUserDetailsQuery(playerId);
+  const { data: user, isSuccess } = useGetUserQuery(playerId);
 
   return (
     isSuccess && (

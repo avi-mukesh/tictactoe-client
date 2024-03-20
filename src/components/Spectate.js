@@ -3,8 +3,11 @@ import { Link, useParams } from "react-router-dom";
 import useSpectate from "../context/SpectateContext";
 import SpectateBoard from "./SpectateBoard";
 import PlayerCard from "./PlayerCard";
+import useTitle from "../hooks/useTitle";
 
 const Spectate = () => {
+  useTitle("Spectating");
+
   const {
     gameRoomId,
     setGameRoomId,
@@ -40,13 +43,11 @@ const Spectate = () => {
           </article>
         </>
       ) : (
-        <>
-          <p className="message message-error">Invalid game room supplied</p>
-          <Link to="/ongoing-games" className="btn btn-primary">
-            Back to ongoing games
-          </Link>
-        </>
+        <p className="message message-error">Invalid game room supplied</p>
       )}
+      <Link to="/ongoing-games" className="btn btn-primary">
+        Back to ongoing games
+      </Link>
     </>
   );
 };

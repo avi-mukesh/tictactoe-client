@@ -15,7 +15,7 @@ import { PlayerProvider } from "./context/PlayerContext";
 import { GameProvider } from "./context/GameContext";
 
 function App() {
-  useTitle("Login");
+  useTitle("Home");
 
   return (
     <Routes>

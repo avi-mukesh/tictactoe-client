@@ -19,7 +19,7 @@ export const registerUser = createAsyncThunk(
       };
 
       await axios.post(
-        `${backendURL}/auth/register`,
+        `${API_BASE}/auth/register`,
         { username, email, password },
         config
       );

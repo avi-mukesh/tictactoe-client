@@ -3,8 +3,15 @@ import React, { useEffect } from "react";
 // import { getOngoingGames } from "../features/game/gameAction";
 import { useGetOngoingGamesQuery } from "../app/services/game/gameService";
 import OngoingGameCard from "./OngoingGameCard";
+import useTitle from "../hooks/useTitle";
+import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Navbar from "./Navbar";
 
 const OngoingGames = () => {
+  useTitle("Ongoing Games");
+  const { userInfo } = useSelector((state) => state.auth);
+
   // this is the pattern using normal Redux toolkit
   // you have gameSlice and gameAction
   //   const { loading, success, ongoingGames } = useSelector((state) => state.game);
@@ -46,6 +53,13 @@ const OngoingGames = () => {
             </section>
           )}
         </>
+      )}
+      {userInfo === null ? (
+        <Link to="/" className="btn btn-primary btn-center">
+          Back to log in
+        </Link>
+      ) : (
+        <Navbar />
       )}
     </>
   );

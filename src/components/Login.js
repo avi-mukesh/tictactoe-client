@@ -1,11 +1,18 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../features/auth/authAction";
 import ValidationError from "./ValidationError";
+import useTitle from "../hooks/useTitle";
 
 const Login = () => {
+  useTitle("Login");
+
+  const { state } = useLocation();
+  console.log("login state", state);
+
+  const justRegistered = state?.registered;
   const { loading, userInfo, error } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -42,6 +49,11 @@ const Login = () => {
           >
             Login
           </button>
+          {justRegistered && (
+            <p className="form-message form-message-success">
+              Sign up successful! You can now log in.
+            </p>
+          )}
           <p className="form-message">
             Don't have an account? <Link to="/register">Sign up now</Link>
           </p>

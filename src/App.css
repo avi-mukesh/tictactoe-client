@@ -154,6 +154,10 @@ input,
   height: 50px;
 }
 
+.btn-center {
+  margin: 0 auto;
+}
+
 .input-group {
   display: flex;
   flex-direction: column;
@@ -260,7 +264,10 @@ p.validation-error {
 p.form-message {
   margin-top: 1rem;
 }
-
+p.form-message-success {
+  /* font-weight: bolder; */
+  color: var(--green);
+}
 a {
   text-decoration: none;
   font-weight: bolder;
@@ -269,6 +276,15 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+a.btn {
+  display: grid;
+  place-content: center;
+}
+
+a.btn:hover {
+  text-decoration: none;
 }
 
 #spectate-button {
@@ -399,12 +415,8 @@ ul {
 
 .loading-ellipses:after {
   content: "";
-  /* overflow: hidden; */
   display: inline-block;
-  /* vertical-align: bottom; */
   animation: ellipsis steps(1, end) 2s infinite;
-  /* ascii code for the ellipsis character */
-  /* width: 0px; */
 }
 
 .message {
@@ -424,15 +436,40 @@ ul {
 
 .message-link {
   font-size: 1rem;
-  border-radius: 10px;
-  border: 1px solid var(--purple);
-  padding: 5px 10px;
-  cursor: pointer;
+  overflow-x: scroll;
 }
 
-.message-link > span {
+.message-link::-webkit-scrollbar {
+  width: 10px;
+}
+
+.message-link::-webkit-scrollbar-track {
+  background: var(--light);
+  border-radius: 10px;
+}
+.message-link::-webkit-scrollbar-thumb {
+  /* width: 5px; */
+  border-radius: 10px;
+  background: var(--dark-transparent);
+}
+
+.message-link::-webkit-scrollbar-thumb:hover {
+  background: var(--dark);
+}
+
+.game-invite-link > span {
   margin: 5px;
   margin-left: 10px;
+}
+
+.game-invite-link {
+  width: clamp(200px, 80vw, 420px);
+  cursor: pointer;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  border: 1px solid var(--purple);
+  border-radius: 10px;
 }
 
 .purple-text {
@@ -499,6 +536,7 @@ section#profile {
   margin: 1rem 0;
   border: 1px solid var(--light);
   border-radius: 10px;
+  /* width: 60%; */
 }
 
 .previous-games {
@@ -507,6 +545,7 @@ section#profile {
   overflow: auto;
   display: flex;
   flex-direction: column;
+  gap: 2vh;
   align-items: center;
 }
 
@@ -514,7 +553,7 @@ section#profile {
   max-width: 80%;
   display: flex;
   gap: 3vw;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 }
 
@@ -528,6 +567,7 @@ section#profile {
   border-radius: 15px;
   border: 1px solid var(--light);
   color: var(--light);
+  min-width: 115px;
 }
 
 .win {

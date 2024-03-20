@@ -23,10 +23,11 @@ export const authApi = createApi({
   // set of operations we want to perform against the server
   // two types of endpoints: query and mutation
   endpoints: (builder) => ({
-    getUserDetails: builder.query({
+    sendPasswordResetEmail: builder.mutation({
       query: (id) => ({
-        url: `user/${id}`,
-        method: "GET",
+        url: `auth/send_password_reset_email`,
+        method: "POST",
+        body: { id },
       }),
     }),
   }),
@@ -34,4 +35,4 @@ export const authApi = createApi({
 
 // export hooks for usage in components, which are
 // auto-generated based on the defined endpoints
-export const { useGetUserDetailsQuery } = authApi;
+export const { useSendPasswordResetEmailMutation } = authApi;

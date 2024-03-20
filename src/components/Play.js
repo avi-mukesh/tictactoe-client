@@ -7,8 +7,10 @@ import Game from "./Game";
 import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
+import useTitle from "../hooks/useTitle";
 
 const Play = () => {
+  useTitle("Play");
   const [customRoomLink, setCustomRoomLink] = useState();
   const [copiedCustomRoomLink, setCopiedCustomRoomLink] = useState(false);
 
@@ -73,7 +75,11 @@ const Play = () => {
   };
 
   const customGameRoomCreated = (roomId) => {
-    setCustomRoomLink(`http://localhost:3000/play/${roomId}`);
+    setCustomRoomLink(
+      process.env.NODE_ENV === "production"
+        ? `https://tictactoe.avimukesh.com/play/${roomId}`
+        : `http://localhost:3000/play/${roomId}`
+    );
   };
 
   useEffect(() => {
@@ -130,11 +136,11 @@ const Play = () => {
               <p className="message message-smaller">
                 Share this link with your friend!
               </p>
-              <p
-                className="message message-link"
+              <div
+                className="game-invite-link"
                 onClick={copyCustomGameRoomLink}
               >
-                {customRoomLink}
+                <p className="message message-link">{customRoomLink}</p>
                 <span
                   className={
                     copiedCustomRoomLink ? "green-text" : "purple-text"
@@ -148,7 +154,7 @@ const Play = () => {
                     <FontAwesomeIcon icon={faCopy} />
                   )}
                 </span>
-              </p>
+              </div>
             </>
           )}
         </section>

@@ -5,6 +5,7 @@ import ValidationError from "./ValidationError";
 import { Link, useNavigate } from "react-router-dom";
 import { registerUser } from "../features/auth/authAction";
 import { useDispatch, useSelector } from "react-redux";
+import useTitle from "../hooks/useTitle";
 
 const RegistrationSchema = Yup.object().shape({
   username: Yup.string().required("Required"),
@@ -21,11 +22,13 @@ const RegistrationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  useTitle("Register");
+
   const { loading, userInfo, success } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   useEffect(() => {
-    if (success) navigate("/");
+    if (success) navigate("/", { state: { registered: true } });
     if (userInfo) navigate("/profile");
   }, [navigate, userInfo, success]);
 

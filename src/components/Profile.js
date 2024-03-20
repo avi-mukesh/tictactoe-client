@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { useGetUserDetailsQuery } from "../app/services/auth/authService";
-import { logout, setCredentials } from "../features/auth/authSlice";
+import { logout } from "../features/auth/authSlice";
 import { useGetPreviousGamesQuery } from "../app/services/game/gameService";
 import PreviousGame from "./PreviousGame";
+import useTitle from "../hooks/useTitle";
 
 const Profile = () => {
+  useTitle("Profile");
   const { userInfo } = useSelector((state) => state.auth);
   const {
     data: previousGames,

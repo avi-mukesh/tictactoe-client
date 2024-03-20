@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../features/auth/authAction";
 import ValidationError from "./ValidationError";
 import useTitle from "../hooks/useTitle";
+import { useSendPasswordResetEmailMutation } from "../app/services/auth/authService";
 
 const Login = () => {
   useTitle("Login");
@@ -54,6 +55,9 @@ const Login = () => {
               Sign up successful! You can now log in.
             </p>
           )}
+          <p className="form-message">
+            Forgot password? Click <Link to="/register">here</Link> to reset it.
+          </p>
           <p className="form-message">
             Don't have an account? <Link to="/register">Sign up now</Link>
           </p>

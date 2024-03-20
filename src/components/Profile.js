@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useGetPreviousGamesQuery } from "../app/services/game/gameService";
@@ -37,16 +37,24 @@ const Profile = () => {
           {isLoading ? (
             <p className="message loading-ellipses">Loading</p>
           ) : (
-            <section className="previous-games">
-              {previousGames.map((prevGame) => (
-                <PreviousGame game={prevGame} key={prevGame._id} />
-              ))}
-            </section>
+            isSuccess && (
+              <section className="previous-games">
+                {previousGames.length > 0 ? (
+                  previousGames.map((prevGame) => (
+                    <PreviousGame game={prevGame} key={prevGame._id} />
+                  ))
+                ) : (
+                  <p className="text-red">No games to show 😔</p>
+                )}
+              </section>
+            )
           )}
         </div>
 
         <div className="button-container">
-          <button className="btn btn-secondary">Reset password</button>
+          <Link to="/update-password" className="btn btn-secondary">
+            Reset password
+          </Link>
           <button className="btn btn-danger" onClick={onLogout}>
             Log out
           </button>

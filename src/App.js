@@ -13,6 +13,8 @@ import RequireAuth from "./components/RequireAuth";
 import { SpectateProvider } from "./context/SpectateContext";
 import { PlayerProvider } from "./context/PlayerContext";
 import { GameProvider } from "./context/GameContext";
+import PasswordResetEmail from "./components/PasswordResetEmail";
+import UpdatePassword from "./components/UpdatePassword";
 
 function App() {
   useTitle("Home");
@@ -36,8 +38,9 @@ function App() {
             }
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
         </Route>
-        <Route path="ongoing-games" element={<OngoingGames />} />
+        <Route path="/ongoing-games" element={<OngoingGames />} />
         <Route
           path="/spectate/:roomId"
           element={
@@ -46,6 +49,7 @@ function App() {
             </SpectateProvider>
           }
         />
+        <Route path="/password-reset-email" element={<PasswordResetEmail />} />
       </Route>
     </Routes>
   );

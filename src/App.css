@@ -534,6 +534,7 @@ section#profile {
 
 #previous-games-container {
   margin: 1rem 0;
+  padding: 1rem;
   border: 1px solid var(--light);
   border-radius: 10px;
   /* width: 60%; */
@@ -575,4 +576,8 @@ section#profile {
 }
 .loss {
   background-color: var(--loss-red-transparent);
+}
+
+.text-red {
+  color: var(--error);
 }

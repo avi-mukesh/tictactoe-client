@@ -5,8 +5,14 @@ import useGameState from "../context/GameContext";
 import { useSelector } from "react-redux";
 
 export const Square = ({ coordinates }) => {
-  const { boardState, myMove, isPlaying, isMyTurn, gameRoomId } =
-    useGameState();
+  const {
+    boardState,
+    myMove,
+    isPlaying,
+    isPlayingComputer,
+    isMyTurn,
+    gameRoomId,
+  } = useGameState();
   const { userInfo } = useSelector((state) => state.auth);
 
   const isFilled =

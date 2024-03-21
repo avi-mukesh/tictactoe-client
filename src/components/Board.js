@@ -2,6 +2,7 @@ import React from "react";
 import Row from "./Row";
 import { Square } from "./Square";
 import Strike from "./Strike";
+import useGameState from "../context/GameContext";
 
 const Board = ({ strikeCoordinates }) => {
   return (

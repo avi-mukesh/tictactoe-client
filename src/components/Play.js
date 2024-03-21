@@ -24,8 +24,13 @@ const Play = () => {
 
   const [isConnected, setIsConnected] = useState(false);
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
-  const { isMatchedWithOpponent, setIsMatchedWithOpponent, setGameRoomId } =
-    useGameState();
+  const {
+    isMatchedWithOpponent,
+    setIsMatchedWithOpponent,
+    setGameRoomId,
+    isPlayingComputer,
+    setIsPlayingComputer,
+  } = useGameState();
 
   useEffect(() => {
     if (roomId) {
@@ -82,6 +87,11 @@ const Play = () => {
     );
   };
 
+  const playComputer = () => {
+    setIsInWaitingRoom(false);
+    setIsPlayingComputer(true);
+  };
+
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
@@ -99,7 +109,7 @@ const Play = () => {
 
     return () => {
       socket.off("connect", onConnect);
-      socket.off("connect", onDisconnect);
+      socket.off("disconnect", onDisconnect);
       socket.off("matched_with_opponent", matchedWithOpponent);
       socket.off("request_player_info", sendPlayerInfo);
       socket.off("custom_game_room_created", customGameRoomCreated);
@@ -109,7 +119,7 @@ const Play = () => {
   return (
     <>
       <h2>Play</h2>
-      {!isMatchedWithOpponent && (
+      {!isMatchedWithOpponent && !isPlayingComputer && (
         <section id="playButtons">
           {!isInWaitingRoom && !customRoomLink && (
             <div className="button-container">
@@ -118,6 +128,9 @@ const Play = () => {
               </button>
               <button className="btn btn-primary" onClick={createGameRoom}>
                 Play a friend
+              </button>
+              <button className="btn btn-primary" onClick={playComputer}>
+                Play computer
               </button>
             </div>
           )}
@@ -159,7 +172,7 @@ const Play = () => {
           )}
         </section>
       )}
-      {isMatchedWithOpponent && <Game />}
+      {(isMatchedWithOpponent || isPlayingComputer) && <Game />}
     </>
   );
 };

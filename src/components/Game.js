@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import PlayerCard from "./PlayerCard";
 import { GAME_RESULT } from "../util/gameResult";
 
-const Game = () => {
+const Game = ({ isPlayingComputer }) => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const {

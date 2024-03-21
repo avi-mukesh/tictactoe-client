@@ -9,6 +9,7 @@ const { SquareState } = require("../util/squareState");
 const GameContext = createContext(null);
 
 export const GameProvider = ({ children }) => {
+  const [isPlayingComputer, setIsPlayingComputer] = useState(false);
   const [gameRoomId, setGameRoomId] = useState(null);
   const [isMatchedWithOpponent, setIsMatchedWithOpponent] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -52,6 +53,21 @@ export const GameProvider = ({ children }) => {
     setBoardState(newBoardState);
     setLastMoveCoordinates(coordinates);
     setIsMyTurn(false);
+
+    // if (isPlayingComputer) {
+    //   makeComputerMove();
+    // }
+  };
+
+  const makeComputerMove = () => {
+    const newBoardState = [...boardState];
+    newBoardState[Math.floor(Math.random() * 3)][
+      Math.floor(Math.random() * 3)
+    ] = "O";
+    setBoardState(newBoardState);
+    setIsMyTurn(true);
+
+    console.log("computer making move");
   };
 
   const opponentMadeMove = ({ coordinates }) => {
@@ -59,8 +75,16 @@ export const GameProvider = ({ children }) => {
     newBoardState[coordinates.y][coordinates.x] = SquareState[opponentSymbol];
     setBoardState(newBoardState);
     setLastMoveCoordinates(coordinates);
-    setIsMyTurn(true);
   };
+
+  useEffect(() => {
+    if (isPlayingComputer) {
+      console.log("set is playinh computer to true");
+      setOpponentInfo({ username: "Computer" });
+      makeComputerMove();
+      setIsMyTurn(true);
+    }
+  }, [isPlayingComputer]);
 
   useEffect(() => {
     if (lastMoveCoordinates) {
@@ -201,6 +225,8 @@ export const GameProvider = ({ children }) => {
         declineRematchRequest,
         strikeCoordinates,
         resetGameState,
+        isPlayingComputer,
+        setIsPlayingComputer,
       }}
     >
       {children}

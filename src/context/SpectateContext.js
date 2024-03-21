@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 const SpectateContext = createContext(null);
 
 export const SpectateProvider = ({ children }) => {
+  const [gameOver, setGameOver] = useState(false);
+  const [winner, setWinner] = useState(null);
   const [playerInfo, setPlayerInfo] = useState(null);
   const [gameRoomId, setGameRoomId] = useState(null);
   const [boardState, setBoardState] = useState([
@@ -31,6 +33,8 @@ export const SpectateProvider = ({ children }) => {
     newBoardState[data.coordinates.y][data.coordinates.x] =
       SquareState[symbolToSet];
     setBoardState(newBoardState);
+
+    setPlayerOneTurn((turn) => !turn);
   };
 
   const handleInvalidGameRoom = () => {
@@ -40,6 +44,8 @@ export const SpectateProvider = ({ children }) => {
 
   const gameEnded = ({ winner, strikeCoordinates }) => {
     setStrikeCoordinates(strikeCoordinates);
+    setGameOver(true);
+    setWinner(winner);
     console.log("game ended motherfucker", winner, strikeCoordinates);
   };
 
@@ -80,6 +86,8 @@ export const SpectateProvider = ({ children }) => {
         setPlayerInfo,
         playerOneTurn,
         strikeCoordinates,
+        gameOver,
+        winner,
       }}
     >
       {children}

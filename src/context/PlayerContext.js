@@ -8,11 +8,16 @@ export const PlayerProvider = ({ children }) => {
   const [opponentSymbol, setOpponentSymbol] = useState(null);
 
   const setMySymbol = (val) => {
+    console.log("setting my symbol to ", val);
     setSymbol(val);
     setOpponentSymbol(val === SYMBOL.NOUGHTS ? SYMBOL.CROSSES : SYMBOL.NOUGHTS);
   };
 
   const reverseSymbols = () => {
+    // console.log("reversing symbols...");
+    // console.log("you are currently", mySymbol);
+    // console.log("your opponent is currently", opponentSymbol);
+
     setMySymbol(mySymbol === SYMBOL.NOUGHTS ? SYMBOL.CROSSES : SYMBOL.NOUGHTS);
     setOpponentSymbol(
       opponentSymbol === SYMBOL.NOUGHTS ? SYMBOL.CROSSES : SYMBOL.NOUGHTS

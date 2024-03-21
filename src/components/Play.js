@@ -8,24 +8,25 @@ import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 import useTitle from "../hooks/useTitle";
+import { SquareState } from "../util/squareState";
+import { SYMBOL } from "../util/symbol";
 
 const Play = () => {
   useTitle("Play");
   const [customRoomLink, setCustomRoomLink] = useState();
   const [copiedCustomRoomLink, setCopiedCustomRoomLink] = useState(false);
 
-  // TODO: carry on from here
   const { roomId } = useParams();
-  console.log(roomId);
-
   const { setMySymbol } = usePlayerContext();
-
   const { userInfo } = useSelector((state) => state.auth);
-
   const [isConnected, setIsConnected] = useState(false);
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
-  const { isMatchedWithOpponent, setIsMatchedWithOpponent, setGameRoomId } =
-    useGameState();
+  const {
+    isMatchedWithOpponent,
+    setIsMatchedWithOpponent,
+    setGameRoomId,
+    playComputer,
+  } = useGameState();
 
   useEffect(() => {
     if (roomId) {
@@ -56,7 +57,6 @@ const Play = () => {
       setIsInWaitingRoom(false);
       setMySymbol(data.symbols[socket.id]);
       setIsMatchedWithOpponent(true);
-      console.log("roomId is", data.roomId);
       setGameRoomId(data.roomId);
     },
     [setIsMatchedWithOpponent, setMySymbol, setGameRoomId]
@@ -80,6 +80,13 @@ const Play = () => {
         ? `https://tictactoe.avimukesh.com/play/${roomId}`
         : `http://localhost:3000/play/${roomId}`
     );
+  };
+
+  const matchedWithComputer = () => {
+    setMySymbol(Math.random() > 0.5 ? SYMBOL.CROSSES : SYMBOL.NOUGHTS);
+    setIsInWaitingRoom(false);
+    setIsMatchedWithOpponent(true);
+    playComputer();
   };
 
   useEffect(() => {
@@ -118,6 +125,9 @@ const Play = () => {
               </button>
               <button className="btn btn-primary" onClick={createGameRoom}>
                 Play a friend
+              </button>
+              <button className="btn btn-primary" onClick={matchedWithComputer}>
+                Play computer
               </button>
             </div>
           )}

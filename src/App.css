@@ -406,7 +406,8 @@ ul {
   color: var(--light);
   font-weight: bolder;
   font-size: 1.2rem;
-  padding: 2rem;
+  padding: 1rem;
+  width: 140px;
 }
 
 .player-card-turn {

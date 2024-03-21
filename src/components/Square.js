@@ -5,8 +5,14 @@ import useGameState from "../context/GameContext";
 import { useSelector } from "react-redux";
 
 export const Square = ({ coordinates }) => {
-  const { boardState, myMove, isPlaying, isMyTurn, gameRoomId } =
-    useGameState();
+  const {
+    boardState,
+    myMove,
+    isPlaying,
+    isPlayingComputer,
+    isMyTurn,
+    gameRoomId,
+  } = useGameState();
   const { userInfo } = useSelector((state) => state.auth);
 
   const isFilled =
@@ -14,12 +20,15 @@ export const Square = ({ coordinates }) => {
 
   const handleClick = () => {
     if (!isFilled) {
-      myMove(coordinates);
-      socket.emit("made_move", {
-        coordinates,
-        username: userInfo.username,
-        gameRoomId,
-      });
+      myMove(coordinates, isPlayingComputer);
+
+      if (!isPlayingComputer) {
+        socket.emit("made_move", {
+          coordinates,
+          username: userInfo.username,
+          gameRoomId,
+        });
+      }
     }
   };
 

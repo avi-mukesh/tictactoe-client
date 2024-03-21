@@ -17,6 +17,8 @@ const Spectate = () => {
     setPlayerInfo,
     playerOneTurn,
     strikeCoordinates,
+    gameOver,
+    winner,
   } = useSpectate();
 
   const { roomId } = useParams();
@@ -29,7 +31,13 @@ const Spectate = () => {
     <>
       {gameRoomId ? (
         <>
-          <p className="message">Spectating</p>
+          {gameOver ? (
+            <p className="game-result-message game-result-message-win">
+              {winner ? `${winner} won!` : "It's a draw"}
+            </p>
+          ) : (
+            <p className="message">Spectating</p>
+          )}
           <SpectateBoard strikeCoordinates={strikeCoordinates} />
           <article className="player-card-container">
             <PlayerCard

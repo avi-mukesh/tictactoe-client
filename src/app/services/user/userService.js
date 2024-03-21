@@ -13,14 +13,7 @@ export const userApi = createApi({
         method: "GET",
       }),
     }),
-    updatePassword: builder.mutation({
-      query: ({ id, currentPassword, newPassword, confirmNewPassword }) => ({
-        url: `user/${id}`,
-        method: "PUT",
-        body: { currentPassword, newPassword, confirmNewPassword },
-      }),
-    }),
   }),
 });
 
-export const { useGetUserQuery, useUpdatePasswordMutation } = userApi;
+export const { useGetUserQuery } = userApi;

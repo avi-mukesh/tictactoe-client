@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useGetPreviousGamesQuery } from "../app/services/game/gameService";
+import { useGetUserQuery } from "../app/services/user/userService";
 import PreviousGame from "./PreviousGame";
 import useTitle from "../hooks/useTitle";
 
@@ -14,7 +15,13 @@ const Profile = () => {
     isLoading,
     isSuccess,
     isError,
-  } = useGetPreviousGamesQuery(userInfo.username);
+  } = useGetPreviousGamesQuery(userInfo.username, {
+    refetchOnMountOrArgChange: true,
+  });
+
+  const { data: user } = useGetUserQuery(userInfo.id, {
+    refetchOnMountOrArgChange: true,
+  });
 
   useEffect(() => {
     console.log("previous games:", previousGames);
@@ -31,6 +38,7 @@ const Profile = () => {
   return (
     <>
       <h2>Welcome, {userInfo.username}</h2>
+      <p className="message message-smaller">ELO {user?.elo}</p>
       <section id="profile">
         <div id="previous-games-container">
           <h3>Previous games</h3>

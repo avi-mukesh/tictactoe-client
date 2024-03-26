@@ -63,8 +63,10 @@ const Play = () => {
   );
 
   const sendPlayerInfo = ({ gameRoomId }) => {
+    console.log(userInfo);
+
     socket.emit("receive_player_info", {
-      user: { username: userInfo.username },
+      user: { username: userInfo.username, elo: userInfo.elo },
       gameRoomId,
     });
   };

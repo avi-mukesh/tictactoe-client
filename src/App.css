@@ -414,6 +414,11 @@ ul {
   background: var(--turn);
 }
 
+.player-card span {
+  font-size: smaller;
+  font-weight: lighter;
+}
+
 .loading-ellipses:after {
   content: "";
   display: inline-block;
@@ -425,6 +430,10 @@ ul {
   color: whitesmoke;
   font-weight: 500;
   margin: 5px 0;
+}
+
+.message-smaller {
+  font-size: smaller;
 }
 
 .message-error {
@@ -577,6 +586,10 @@ section#profile {
 }
 .loss {
   background-color: var(--loss-red-transparent);
+}
+
+.draw {
+  background-color: var(--dark);
 }
 
 .text-red {

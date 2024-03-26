@@ -4,11 +4,6 @@ const Strike = ({ strikeCoordinates }) => {
   const startCoords = strikeCoordinates.startCoords;
   const endCoords = strikeCoordinates.endCoords;
 
-  console.log(startCoords);
-  console.log(endCoords);
-  // const startCoords = { x: 2, y: 0 };
-  // const endCoords = { x: 0, y: 2 };
-
   let l = 0;
   let t = 0;
   let transform = "";

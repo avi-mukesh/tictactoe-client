@@ -45,10 +45,15 @@ export const GameProvider = ({ children }) => {
     setReceivedRematchRequest(false);
     setStrikeCoordinates(null);
     setGameRoomId(null);
+    setLastMoveCoordinates(null);
   };
 
+  useEffect(() => {
+    console.log("striking", strikeCoordinates);
+  }, [strikeCoordinates]);
+
   const myMove = (coordinates, isPlayingComputer = false) => {
-    console.log(mySymbol, opponentSymbol);
+    // console.log(mySymbol, opponentSymbol);
     const newBoardState = [...boardState];
     newBoardState[coordinates.y][coordinates.x] = SquareState[mySymbol];
     setBoardState(newBoardState);
@@ -71,7 +76,7 @@ export const GameProvider = ({ children }) => {
 
   const checkWinner = (coordinates, currentBoardState) => {
     const { x, y } = coordinates;
-    console.log(x, y);
+    // console.log(x, y);
     const sameSymbol = (symbol) => {
       return symbol === currentBoardState[y][x];
     };
@@ -133,7 +138,7 @@ export const GameProvider = ({ children }) => {
   };
 
   const computerMove = () => {
-    console.log("computer made move");
+    // console.log("computer made move");
 
     const coordinates = {
       x: Math.floor(Math.random() * 3),
@@ -144,10 +149,6 @@ export const GameProvider = ({ children }) => {
       coordinates,
     });
   };
-
-  useEffect(() => {
-    console.log("new board state", boardState);
-  }, [boardState]);
 
   const opponentMadeMove = ({ coordinates }) => {
     const newBoardState = [...boardState];
@@ -169,7 +170,7 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     if (lastMoveCoordinates) {
       const { x, y } = lastMoveCoordinates;
-      console.log(x, y);
+      // console.log(x, y);
       const sameSymbol = (symbol) => {
         return symbol === boardState[y][x];
       };
@@ -272,13 +273,13 @@ export const GameProvider = ({ children }) => {
     };
   });
 
-  useEffect(() => {
-    console.log(`new game room id: ${gameRoomId}`);
-  }, [gameRoomId]);
-
   const requestRematch = () => {
-    setRematchRequested(true);
-    socket.emit("request_rematch", gameRoomId);
+    if (isPlayingComputer) {
+      resetGameState();
+    } else {
+      setRematchRequested(true);
+      socket.emit("request_rematch", gameRoomId);
+    }
   };
 
   const revokeRematchRequest = () => {
@@ -294,16 +295,12 @@ export const GameProvider = ({ children }) => {
   const declineRematchRequest = () => {};
 
   const playComputer = () => {
-    console.log("Now playing computer");
+    // console.log("Now playing computer");
     setIsMyTurn(true);
     setIsPlaying(true);
     setIsPlayingComputer(true);
     setOpponentInfo({ username: "Computer" });
   };
-
-  useEffect(() => {
-    console.log("it is my turn:", isMyTurn);
-  }, [isMyTurn]);
 
   return (
     <GameContext.Provider

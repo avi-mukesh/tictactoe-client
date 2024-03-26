@@ -6,6 +6,11 @@ import { useSelector } from "react-redux";
 const PreviousGame = ({ game }) => {
   const { userInfo } = useSelector((state) => state.auth);
 
+  const eloChange =
+    game.playerOne === userInfo.id
+      ? game.playerOneEloChange
+      : game.playerTwoEloChange;
+
   return (
     <article>
       <PreviousGamePlayerInfo
@@ -24,6 +29,18 @@ const PreviousGame = ({ game }) => {
           : game.winner === userInfo.id
           ? "You won!"
           : "You lost!"}
+        <span
+          className={`elo-change ${
+            eloChange > 0
+              ? "green-text"
+              : eloChange === 0
+              ? "grey-text"
+              : "red-text"
+          }`}
+        >
+          {eloChange > 0 && "+"}
+          {eloChange}
+        </span>
       </p>
       <PreviousGamePlayerInfo
         playerId={game.playerTwo}

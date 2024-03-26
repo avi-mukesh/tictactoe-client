@@ -308,6 +308,10 @@ a.btn:hover {
     margin: 0;
     margin-left: 2rem;
   }
+
+  #previous-games-container {
+    width: 60%;
+  }
 }
 
 section#playButtons {
@@ -488,6 +492,12 @@ ul {
 .green-text {
   color: var(--green);
 }
+.red-text {
+  color: var(--loss-red);
+}
+.grey-text {
+  color: var(--grey);
+}
 
 @keyframes ellipsis {
   0% {
@@ -547,7 +557,7 @@ section#profile {
   padding: 1rem;
   border: 1px solid var(--light);
   border-radius: 10px;
-  /* width: 60%; */
+  /* width: 60%;  */
 }
 
 .previous-games {
@@ -571,6 +581,12 @@ section#profile {
 .previous-games article > p {
   font-size: 1.2rem;
   color: var(--light);
+  display: flex;
+  flex-direction: column;
+}
+
+.previous-games article span {
+  font-weight: bolder;
 }
 
 .previous-game-player-info {
@@ -590,6 +606,16 @@ section#profile {
 
 .draw {
   background-color: var(--dark);
+}
+
+.loss-text {
+  color: var(--loss-red);
+}
+.win-text {
+  color: var(--win-green-transparent);
+}
+.draw-text {
+  color: var(--dark);
 }
 
 .text-red {

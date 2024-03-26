@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -30,17 +30,40 @@ const Login = () => {
     dispatch(loginUser(values));
   };
 
+  const usernameRef = useRef();
+  const passwordRef = useRef();
+
   return (
     <Formik initialValues={{ username: "", password: "" }} onSubmit={onLogin}>
       {() => (
         <Form>
           <div className="input-group">
-            <Field type="text" name="username" required />
-            <label htmlFor="username">Username</label>
+            <Field
+              innerRef={usernameRef}
+              type="text"
+              name="username"
+              required
+            />
+            <label
+              htmlFor="username"
+              onClick={() => usernameRef.current.focus()}
+            >
+              Username
+            </label>
           </div>
           <div className="input-group">
-            <Field type="password" name="password" required />
-            <label htmlFor="password">Password</label>
+            <Field
+              innerRef={passwordRef}
+              type="password"
+              name="password"
+              required
+            />
+            <label
+              htmlFor="password"
+              onClick={() => passwordRef.current.focus()}
+            >
+              Password
+            </label>
           </div>
           {error && <ValidationError>{error}</ValidationError>}
           <button

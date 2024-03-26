@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import ValidationError from "./ValidationError";
@@ -38,6 +38,11 @@ const Register = () => {
     dispatch(registerUser(values));
   };
 
+  const usernameRef = useRef();
+  const emailRef = useRef();
+  const passwordRef = useRef();
+  const confirmPasswordRef = useRef();
+
   return (
     <Formik
       initialValues={{ username: "", email: "", password: "" }}
@@ -47,29 +52,61 @@ const Register = () => {
       {({ isSubmitting, errors, touched }) => (
         <Form>
           <div className="input-group">
-            <Field type="text" name="username" required />
-            <label htmlFor="username">Username</label>
+            <Field
+              innerRef={usernameRef}
+              type="text"
+              name="username"
+              required
+            />
+            <label
+              htmlFor="username"
+              onClick={() => usernameRef.current.focus()}
+            >
+              Username
+            </label>
           </div>
           {errors.username && touched.username && (
             <ErrorMessage name="username" component={ValidationError} />
           )}
           <div className="input-group">
-            <Field type="email" name="email" required />
-            <label htmlFor="username">Email</label>
+            <Field innerRef={emailRef} type="email" name="email" required />
+            <label htmlFor="email" onClick={() => emailRef.current.focus()}>
+              Email
+            </label>
           </div>
           {errors.email && touched.email && (
             <ErrorMessage name="email" component={ValidationError} />
           )}
           <div className="input-group">
-            <Field type="password" name="password" required />
-            <label htmlFor="password">Password</label>
+            <Field
+              innerRef={passwordRef}
+              type="password"
+              name="password"
+              required
+            />
+            <label
+              htmlFor="password"
+              onClick={() => passwordRef.current.focus()}
+            >
+              Password
+            </label>
           </div>
           {errors.password && touched.password && (
             <ErrorMessage name="password" component={ValidationError} />
           )}
           <div className="input-group">
-            <Field type="password" name="confirmPassword" required />
-            <label htmlFor="password">Confirm password</label>
+            <Field
+              innerRef={confirmPasswordRef}
+              type="password"
+              name="confirmPassword"
+              required
+            />
+            <label
+              htmlFor="confirmPassword"
+              onClick={() => confirmPasswordRef.current.focus()}
+            >
+              Confirm password
+            </label>
           </div>
           {errors.password && touched.password && (
             <ErrorMessage name="confirmPassword" component={ValidationError} />

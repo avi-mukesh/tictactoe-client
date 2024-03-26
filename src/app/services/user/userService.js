@@ -13,6 +13,12 @@ export const userApi = createApi({
         method: "GET",
       }),
     }),
+    getUsers: builder.query({
+      query: () => ({
+        url: "user",
+        method: "GET",
+      }),
+    }),
     updatePassword: builder.mutation({
       query: ({ id, currentPassword, newPassword, confirmNewPassword }) => ({
         url: `user/${id}`,
@@ -23,4 +29,5 @@ export const userApi = createApi({
   }),
 });
 
-export const { useGetUserQuery, useUpdatePasswordMutation } = userApi;
+export const { useGetUserQuery, useGetUsersQuery, useUpdatePasswordMutation } =
+  userApi;

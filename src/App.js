@@ -6,6 +6,7 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Play from "./components/Play";
 import Spectate from "./components/Spectate";
+import Leaderboard from "./components/Leaderboard";
 import OngoingGames from "./components/OngoingGames";
 import NotLoggedInSharedLayout from "./components/NotLoggedInSharedLayout";
 import Profile from "./components/Profile";
@@ -39,6 +40,7 @@ function App() {
           />
           <Route path="/profile" element={<Profile />} />
           <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>
         <Route path="/ongoing-games" element={<OngoingGames />} />
         <Route

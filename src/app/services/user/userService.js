@@ -5,6 +5,14 @@ export const userApi = createApi({
   reducerPath: "userApi",
   baseQuery: fetchBaseQuery({
     baseUrl: `${API_BASE}/`,
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth.accessToken;
+      console.log(token);
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+        return headers;
+      }
+    },
   }),
   endpoints: (builder) => ({
     getUser: builder.query({

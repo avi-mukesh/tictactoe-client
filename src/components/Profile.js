@@ -15,9 +15,12 @@ const Profile = () => {
 
   console.log("query userid", userId);
 
-  const { data: user } = useGetUserQuery(userId || userInfo.id, {
-    refetchOnMountOrArgChange: true,
-  });
+  const { data: user, isLoading: isLoadingUser } = useGetUserQuery(
+    userId || userInfo.id,
+    {
+      refetchOnMountOrArgChange: true,
+    }
+  );
 
   const {
     data: previousGames,
@@ -39,9 +42,10 @@ const Profile = () => {
   return (
     <>
       <h2>
-        {myProfile
-          ? `Welcome, ${user?.username}`
-          : `${user?.username}'s profile`}
+        {!isLoadingUser &&
+          (myProfile
+            ? `Welcome, ${user?.username}`
+            : `${user?.username}'s profile`)}
       </h2>
       <p className="message message-smaller">ELO {user?.elo}</p>
       <section id="profile">

@@ -1,6 +1,7 @@
 :root {
   --dark: #333;
   --dark-transparent: rgba(51, 51, 51, 0.75);
+  --darker-transparent: rgba(32, 34, 34, 0.4);
   --light: whitesmoke;
   --light-transparent: rgba(245, 245, 245, 0.6);
   --grid-line-color: rgba(105, 105, 105, 0);
@@ -12,8 +13,8 @@
 
   --green: #3cba92;
   --purple: rgb(182, 109, 246);
-
   --grey: #707070;
+  --gold: #ffd700;
 
   --win-green: var(--turn);
   --win-green-transparent: rgba(60, 186, 146, 0.75);
@@ -627,12 +628,14 @@ section#profile {
 }
 
 .leaderboard-table {
+  color: var(--light);
   width: 60%;
   max-width: 500px;
   margin-top: 2vh;
   border-radius: 1rem;
   font-size: 1rem;
-  background: var(--light-transparent);
+  background: var(--dark-transparent);
+  border: 1px solid var(--light-transparent);
 }
 
 .leaderboard-table thead,
@@ -644,7 +647,27 @@ section#profile {
   padding: 10px 5px;
 }
 
-.leaderboard-table th:first-of-type,
-.leaderboard-table td:first-of-type {
-  border-right: 1px solid var(--dark-transparent);
+.leaderboard-table th:not(:last-of-type),
+.leaderboard-table td:not(:last-of-type) {
+  border-right: 1px solid var(--light-transparent);
+}
+
+.leaderboard-table td {
+  padding: 5px;
+}
+
+.leaderboard-table tr:nth-child(2n-1) {
+  background-color: var(--darker-transparent);
+}
+
+.leaderboard-table a {
+  font-weight: normal;
+}
+
+.leaderboard-table td.position {
+  color: var(--purple);
+}
+
+span#crown {
+  color: var(--gold);
 }

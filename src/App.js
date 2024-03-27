@@ -39,6 +39,7 @@ function App() {
             }
           />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/profile/:userId" element={<Profile />} />
           <Route path="/update-password" element={<UpdatePassword />} />
           <Route path="/leaderboard" element={<Leaderboard />} />
         </Route>

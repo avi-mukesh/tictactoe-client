@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../features/auth/authSlice";
 import { useGetPreviousGamesQuery } from "../app/services/game/gameService";
@@ -9,23 +9,24 @@ import useTitle from "../hooks/useTitle";
 
 const Profile = () => {
   useTitle("Profile");
+  const { userId } = useParams();
+
   const { userInfo } = useSelector((state) => state.auth);
+
+  console.log("query userid", userId);
+
+  const { data: user } = useGetUserQuery(userId || userInfo.id, {
+    refetchOnMountOrArgChange: true,
+  });
+
   const {
     data: previousGames,
     isLoading,
     isSuccess,
-    isError,
-  } = useGetPreviousGamesQuery(userInfo.username, {
+  } = useGetPreviousGamesQuery(user?.username, {
     refetchOnMountOrArgChange: true,
   });
-
-  const { data: user } = useGetUserQuery(userInfo.id, {
-    refetchOnMountOrArgChange: true,
-  });
-
-  useEffect(() => {
-    console.log("previous games:", previousGames);
-  }, [previousGames]);
+  const myProfile = !userId || userId === userInfo.id;
 
   const dispatch = useDispatch();
 
@@ -37,7 +38,11 @@ const Profile = () => {
 
   return (
     <>
-      <h2>Welcome, {userInfo.username}</h2>
+      <h2>
+        {myProfile
+          ? `Welcome, ${user?.username}`
+          : `${user?.username}'s profile`}
+      </h2>
       <p className="message message-smaller">ELO {user?.elo}</p>
       <section id="profile">
         <div id="previous-games-container">
@@ -49,7 +54,11 @@ const Profile = () => {
               <section className="previous-games">
                 {previousGames.length > 0 ? (
                   previousGames.map((prevGame) => (
-                    <PreviousGame game={prevGame} key={prevGame._id} />
+                    <PreviousGame
+                      game={prevGame}
+                      key={prevGame._id}
+                      myProfile={myProfile}
+                    />
                   ))
                 ) : (
                   <p className="text-red">No games to show 😔</p>
@@ -59,14 +68,16 @@ const Profile = () => {
           )}
         </div>
 
-        <div className="button-container">
-          <Link to="/update-password" className="btn btn-secondary">
-            Reset password
-          </Link>
-          <button className="btn btn-danger" onClick={onLogout}>
-            Log out
-          </button>
-        </div>
+        {myProfile && (
+          <div className="button-container">
+            <Link to="/update-password" className="btn btn-secondary">
+              Reset password
+            </Link>
+            <button className="btn btn-danger" onClick={onLogout}>
+              Log out
+            </button>
+          </div>
+        )}
       </section>
     </>
   );

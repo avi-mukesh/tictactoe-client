@@ -3,7 +3,8 @@ import PreviousGamePlayerInfo from "./PreviousGamePlayerInfo";
 import { GAME_RESULT } from "../util/gameResult";
 import { useSelector } from "react-redux";
 
-const PreviousGame = ({ game }) => {
+const PreviousGame = ({ game, myProfile }) => {
+  console.log(myProfile);
   const { userInfo } = useSelector((state) => state.auth);
 
   const eloChange =
@@ -24,11 +25,13 @@ const PreviousGame = ({ game }) => {
         }
       />
       <p>
-        {!game.winner
-          ? "Draw"
-          : game.winner === userInfo.id
-          ? "You won!"
-          : "You lost!"}
+        {myProfile
+          ? !game.winner
+            ? "Draw"
+            : game.winner === userInfo.id
+            ? "You won!"
+            : "You lost!"
+          : ""}
         <span
           className={`elo-change ${
             eloChange > 0

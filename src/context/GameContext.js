@@ -2,6 +2,7 @@ import { GAME_RESULT } from "../util/gameResult";
 
 import { socket } from "../app/socket";
 import { usePlayerContext } from "./PlayerContext";
+import { findBestMove } from "../util/ai";
 
 const { createContext, useContext, useState, useEffect } = require("react");
 const { SquareState } = require("../util/squareState");
@@ -138,12 +139,18 @@ export const GameProvider = ({ children }) => {
   };
 
   const computerMove = () => {
-    // console.log("computer made move");
+    // let coordinates;
+    // for (let i = 0; i < 3; i++) {
+    //   for (let j = 0; j < 3; j++) {
+    //     if (boardState[j][i] === SquareState.EMPTY) {
+    //       coordinates = { x: i, y: j };
+    //       break;
+    //     }
+    //   }
+    // }
 
-    const coordinates = {
-      x: Math.floor(Math.random() * 3),
-      y: Math.floor(Math.random() * 3),
-    };
+    let coordinates = findBestMove([...boardState], opponentSymbol);
+    console.log(coordinates);
 
     opponentMadeMove({
       coordinates,
@@ -154,15 +161,6 @@ export const GameProvider = ({ children }) => {
     const newBoardState = [...boardState];
     newBoardState[coordinates.y][coordinates.x] = SquareState[opponentSymbol];
     setBoardState(newBoardState);
-    // setBoardState((board) =>
-    //   board.map((row, i) =>
-    //     row.map((el, j) =>
-    //       i === coordinates.y && j === coordinates.x
-    //         ? SquareState[opponentSymbol]
-    //         : el
-    //     )
-    //   )
-    // );
     setLastMoveCoordinates(coordinates);
     setIsMyTurn(true);
   };
@@ -170,7 +168,6 @@ export const GameProvider = ({ children }) => {
   useEffect(() => {
     if (lastMoveCoordinates) {
       const { x, y } = lastMoveCoordinates;
-      // console.log(x, y);
       const sameSymbol = (symbol) => {
         return symbol === boardState[y][x];
       };

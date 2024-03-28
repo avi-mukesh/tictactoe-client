@@ -92,6 +92,10 @@ const Play = () => {
   };
 
   useEffect(() => {
+    socket.emit("delete_incomplete_games", userInfo.username);
+  }, []);
+
+  useEffect(() => {
     function onConnect() {
       setIsConnected(true);
     }

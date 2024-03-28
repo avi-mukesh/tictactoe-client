@@ -99,12 +99,19 @@ function getAvailableMoves(board) {
   return moves;
 }
 
-function minimax(board, depth, isMaximizing, computerSymbol) {
+function minimax(board, depth, isMaximizing, computerSymbol, mySymbol) {
+  //   console.log("finding best move in ", JSON.parse(JSON.stringify(board)));
   if (gameOver(board)) {
     return evaluate(board, computerSymbol);
   }
 
   const availableMoves = getAvailableMoves(board);
+
+  //   console.log(
+  //     "available moves from this position",
+  //     JSON.parse(JSON.stringify(availableMoves))
+  //   );
+
   if (availableMoves.length === 0) {
     return 0;
   }
@@ -113,7 +120,7 @@ function minimax(board, depth, isMaximizing, computerSymbol) {
     let bestScore = -Infinity;
     for (const move of availableMoves) {
       board[move.x][move.y] = computerSymbol;
-      const score = minimax(board, depth + 1, false);
+      const score = minimax(board, depth + 1, false, computerSymbol);
       board[move.x][move.y] = SquareState.EMPTY;
       bestScore = Math.max(score, bestScore);
     }
@@ -121,11 +128,8 @@ function minimax(board, depth, isMaximizing, computerSymbol) {
   } else {
     let bestScore = Infinity;
     for (const move of availableMoves) {
-      board[move.x][move.y] =
-        computerSymbol === SquareState.CROSSES
-          ? SquareState.NOUGHTS
-          : SquareState.CROSSES;
-      const score = minimax(board, depth + 1, true);
+      board[move.x][move.y] = mySymbol;
+      const score = minimax(board, depth + 1, true, computerSymbol);
       board[move.x][move.y] = SquareState.EMPTY;
       bestScore = Math.min(score, bestScore);
     }
@@ -133,9 +137,7 @@ function minimax(board, depth, isMaximizing, computerSymbol) {
   }
 }
 
-export const findBestMove = (board, computerSymbol) => {
-  console.log("finding best move in ", board);
-
+export const findBestMove = (board, computerSymbol, mySymbol) => {
   let bestMove;
   let bestScore = -Infinity;
   const availableMoves = getAvailableMoves(board);
@@ -144,13 +146,13 @@ export const findBestMove = (board, computerSymbol) => {
 
   for (const move of availableMoves) {
     board[move.x][move.y] = computerSymbol;
-    const score = minimax(board, 0, false);
+    const score = minimax(board, 0, true, computerSymbol, mySymbol);
     board[move.x][move.y] = SquareState.EMPTY;
     if (score > bestScore) {
       bestScore = score;
       bestMove = move;
     }
   }
-
-  return { x: bestMove.y, y: bestMove.x };
+  return bestMove;
+  //   return { x: bestMove.y, y: bestMove.x };
 };

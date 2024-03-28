@@ -149,7 +149,11 @@ export const GameProvider = ({ children }) => {
     //   }
     // }
 
-    let coordinates = findBestMove([...boardState], opponentSymbol);
+    let coordinates = findBestMove(
+      [...boardState],
+      SquareState[opponentSymbol],
+      SquareState[mySymbol]
+    );
     console.log(coordinates);
 
     opponentMadeMove({
@@ -296,7 +300,7 @@ export const GameProvider = ({ children }) => {
     setIsMyTurn(true);
     setIsPlaying(true);
     setIsPlayingComputer(true);
-    setOpponentInfo({ username: "Computer" });
+    setOpponentInfo({ username: "Computer", elo: 9999 });
   };
 
   return (

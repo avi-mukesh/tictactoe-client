@@ -8,9 +8,9 @@ const OngoingGamePlayerInfo = ({ playerId, symbol }) => {
 
   return (
     <>
-      {!isLoading && !error && (
+      {!isLoading && (
         <div className="ongoing-games-player-card">
-          <p>{player.username}</p>
+          <p>{player ? player.username : "Anon"}</p>
           <span>{SquareState[symbol]}</span>
         </div>
       )}

@@ -22,16 +22,7 @@ const OngoingGames = () => {
 
   // this is the pattern using RTK Query - just one line
   // can optionally specify how often to refetch the as well
-  const {
-    data: ongoingGames,
-    error,
-    isLoading,
-  } = useGetOngoingGamesQuery(
-    undefined
-    // {
-    // pollingInterval: 10000,
-    // }
-  );
+  const { data: ongoingGames, error, isLoading } = useGetOngoingGamesQuery();
 
   return (
     <>

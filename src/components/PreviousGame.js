@@ -4,7 +4,6 @@ import { GAME_RESULT } from "../util/gameResult";
 import { useSelector } from "react-redux";
 
 const PreviousGame = ({ game, myProfile }) => {
-  console.log(myProfile);
   const { userInfo } = useSelector((state) => state.auth);
 
   const eloChange =

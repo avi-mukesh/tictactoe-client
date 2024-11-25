@@ -8,11 +8,5 @@ export const getOngoingGames = createAsyncThunk("game/ongoing", async () => {
     return data;
   } catch (error) {
     console.log("error in game action", error);
-    // if (error.response && error.response.data.message) {
-    //   console.log(error)
-    //   return rejectWithValue(error.response.data.message);
-    // } else {
-    //   return rejectWithValue(error.message);
-    // }
   }
 });

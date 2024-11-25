@@ -33,7 +33,6 @@ const Register = () => {
   }, [navigate, userInfo, success]);
 
   const onRegister = (values, { setSubmitting }) => {
-    console.log("registeirng with these details", values);
     setSubmitting(false);
     dispatch(registerUser(values));
   };

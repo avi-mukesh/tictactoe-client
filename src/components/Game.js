@@ -7,10 +7,9 @@ import { SYMBOL } from "../util/symbol";
 import { Link } from "react-router-dom";
 import PlayerCard from "./PlayerCard";
 import { GAME_RESULT } from "../util/gameResult";
+import { useGetUserQuery } from "../app/services/user/userService";
 
 const Game = () => {
-  const { userInfo } = useSelector((state) => state.auth);
-
   const {
     isPlaying,
     isMyTurn,
@@ -29,6 +28,20 @@ const Game = () => {
     setIsMatchedWithOpponent,
   } = useGameState();
 
+  const { userInfo } = useSelector((state) => state.auth);
+
+  const { data: user } = useGetUserQuery(userInfo.id, {
+    refetchOnMountOrArgChange: true,
+    pollingInterval: 2000,
+  });
+  const { data: opponent, isLoading: loadingOpponent } = useGetUserQuery(
+    opponentInfo?.id,
+    {
+      refetchOnMountOrArgChange: true,
+      pollingInterval: 2000,
+    }
+  );
+
   const { mySymbol } = usePlayerContext();
 
   const backToPlayMainPage = () => {
@@ -46,7 +59,7 @@ const Game = () => {
       <div className="game-message-container">
         {isPlaying && (
           <p className="game-turn-message ">
-            {isMyTurn ? "Your turn" : `${opponentInfo?.username}'s turn`}
+            {isMyTurn ? "Your turn" : `${opponent?.username}'s turn`}
           </p>
         )}
         {gameResult && (
@@ -64,8 +77,20 @@ const Game = () => {
       <Board strikeCoordinates={strikeCoordinates} />
       {isPlaying && (
         <article className="player-card-container">
-          <PlayerCard playerInfo={userInfo} theirTurn={isMyTurn} />
-          <PlayerCard playerInfo={opponentInfo} theirTurn={!isMyTurn} />
+          <PlayerCard
+            username={userInfo?.username}
+            elo={user?.elo}
+            theirTurn={isMyTurn}
+          />
+          {!loadingOpponent ? (
+            <PlayerCard
+              username={opponentInfo?.username}
+              elo={opponent?.elo}
+              theirTurn={!isMyTurn}
+            />
+          ) : (
+            "Loading"
+          )}
         </article>
       )}
       {gameResult && (
@@ -78,7 +103,7 @@ const Game = () => {
             </button>
           ) : (
             <button className="btn btn-primary" onClick={requestRematch}>
-              Play geeza again
+              Play opponent again
             </button>
           )}
           <Link
@@ -86,7 +111,7 @@ const Game = () => {
             className="btn btn-secondary"
             onClick={backToPlayMainPage}
           >
-            Give me a new brudda
+            New opponent
           </Link>
         </div>
       )}

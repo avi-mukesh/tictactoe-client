@@ -27,7 +27,6 @@ export const SpectateProvider = ({ children }) => {
     } else {
       symbolToSet = playerInfo?.playerTwo.symbol;
     }
-    console.log(playerInfo);
 
     const newBoardState = [...boardState];
     newBoardState[data.coordinates.y][data.coordinates.x] =
@@ -46,7 +45,6 @@ export const SpectateProvider = ({ children }) => {
     setStrikeCoordinates(strikeCoordinates);
     setGameOver(true);
     setWinner(winner);
-    console.log("game ended motherfucker", winner, strikeCoordinates);
   };
 
   useEffect(() => {

@@ -10,6 +10,7 @@ import { faCheck, faCopy } from "@fortawesome/free-solid-svg-icons";
 import useTitle from "../hooks/useTitle";
 import { SquareState } from "../util/squareState";
 import { SYMBOL } from "../util/symbol";
+import { useGetUserQuery } from "../app/services/user/userService";
 
 const Play = () => {
   useTitle("Play");
@@ -19,6 +20,11 @@ const Play = () => {
   const { roomId } = useParams();
   const { setMySymbol } = usePlayerContext();
   const { userInfo } = useSelector((state) => state.auth);
+
+  const { data: user } = useGetUserQuery(userInfo.id, {
+    refetchOnMountOrArgChange: true,
+  });
+
   const [isConnected, setIsConnected] = useState(false);
   const [isInWaitingRoom, setIsInWaitingRoom] = useState(false);
   const {
@@ -58,15 +64,14 @@ const Play = () => {
       setMySymbol(data.symbols[socket.id]);
       setIsMatchedWithOpponent(true);
       setGameRoomId(data.roomId);
+      setCustomRoomLink(null);
     },
     [setIsMatchedWithOpponent, setMySymbol, setGameRoomId]
   );
 
   const sendPlayerInfo = ({ gameRoomId }) => {
-    console.log(userInfo);
-
     socket.emit("receive_player_info", {
-      user: { username: userInfo.username, elo: userInfo.elo },
+      user: { id: userInfo.id, username: userInfo.username, elo: userInfo.elo },
       gameRoomId,
     });
   };

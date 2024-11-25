@@ -43,16 +43,11 @@ export const loginUser = createAsyncThunk(
         },
       };
 
-      console.log(
-        `trying to log in with username: ${username}, password: ${password}`
-      );
-
       const { data } = await axios.post(
         `${API_BASE}/auth/login`,
         { username, password },
         config
       );
-      console.log("data returned from logging in", data);
 
       const userInfo = {
         ...jwtDecode(data.accessToken),

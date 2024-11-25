@@ -9,10 +9,6 @@ const Leaderboard = () => {
   useTitle("Leaderboard");
   const { data: users, error, isLoading } = useGetUsersQuery();
 
-  useEffect(() => {
-    console.log();
-  }, [users]);
-
   return (
     <>
       <h2>Leaderboard</h2>

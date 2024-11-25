@@ -10,10 +10,7 @@ import useTitle from "../hooks/useTitle";
 const Profile = () => {
   useTitle("Profile");
   const { userId } = useParams();
-
   const { userInfo } = useSelector((state) => state.auth);
-
-  console.log("query userid", userId);
 
   const { data: user, isLoading: isLoadingUser } = useGetUserQuery(
     userId || userInfo.id,

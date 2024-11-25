@@ -100,17 +100,11 @@ function getAvailableMoves(board) {
 }
 
 function minimax(board, depth, isMaximizing, computerSymbol, mySymbol) {
-  //   console.log("finding best move in ", JSON.parse(JSON.stringify(board)));
   if (gameOver(board)) {
     return evaluate(board, computerSymbol);
   }
 
   const availableMoves = getAvailableMoves(board);
-
-  //   console.log(
-  //     "available moves from this position",
-  //     JSON.parse(JSON.stringify(availableMoves))
-  //   );
 
   if (availableMoves.length === 0) {
     return 0;
@@ -142,7 +136,6 @@ export const findBestMove = (board, computerSymbol, mySymbol) => {
   let bestScore = -Infinity;
   const availableMoves = getAvailableMoves(board);
 
-  console.log(availableMoves);
 
   for (const move of availableMoves) {
     board[move.x][move.y] = computerSymbol;

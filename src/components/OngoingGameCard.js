@@ -12,7 +12,6 @@ const OngoingGameCard = ({ game }) => {
   const navigate = useNavigate();
 
   const spectate = () => {
-    console.log(`trying to spectate ${game.roomId}`);
     navigate(`/spectate/${game.roomId}`);
   };
 

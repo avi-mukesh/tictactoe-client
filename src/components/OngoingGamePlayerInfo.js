@@ -6,10 +6,6 @@ import { SquareState } from "../util/squareState";
 const OngoingGamePlayerInfo = ({ playerId, symbol }) => {
   const { data: player, isLoading, error } = useGetUserQuery(playerId);
 
-  useEffect(() => {
-    console.log(player);
-  }, [player]);
-
   return (
     <>
       {!isLoading && !error && (

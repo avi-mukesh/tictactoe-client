@@ -11,7 +11,6 @@ const Login = () => {
   useTitle("Login");
 
   const { state } = useLocation();
-  console.log("login state", state);
 
   const justRegistered = state?.registered;
   const { loading, userInfo, error } = useSelector((state) => state.auth);

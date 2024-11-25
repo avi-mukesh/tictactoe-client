@@ -40,6 +40,7 @@ export const GameProvider = ({ children }) => {
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
       [SquareState.EMPTY, SquareState.EMPTY, SquareState.EMPTY],
     ]);
+    // setOpponentInfo(null);
     setGameResult(null);
     reverseSymbols();
     setRematchRequested(false);
@@ -49,24 +50,10 @@ export const GameProvider = ({ children }) => {
     setLastMoveCoordinates(null);
   };
 
-  useEffect(() => {
-    console.log("striking", strikeCoordinates);
-  }, [strikeCoordinates]);
-
   const myMove = (coordinates, isPlayingComputer = false) => {
-    // console.log(mySymbol, opponentSymbol);
     const newBoardState = [...boardState];
     newBoardState[coordinates.y][coordinates.x] = SquareState[mySymbol];
     setBoardState(newBoardState);
-    // setBoardState((board) =>
-    //   board.map((row, i) =>
-    //     row.map((el, j) =>
-    //       i === coordinates.y && j === coordinates.x
-    //         ? SquareState[mySymbol]
-    //         : el
-    //     )
-    //   )
-    // );
     setLastMoveCoordinates(coordinates, newBoardState);
     setIsMyTurn(false);
 
@@ -77,7 +64,6 @@ export const GameProvider = ({ children }) => {
 
   const checkWinner = (coordinates, currentBoardState) => {
     const { x, y } = coordinates;
-    // console.log(x, y);
     const sameSymbol = (symbol) => {
       return symbol === currentBoardState[y][x];
     };
@@ -154,7 +140,6 @@ export const GameProvider = ({ children }) => {
       SquareState[opponentSymbol],
       SquareState[mySymbol]
     );
-    console.log(coordinates);
 
     opponentMadeMove({
       coordinates,
@@ -296,7 +281,6 @@ export const GameProvider = ({ children }) => {
   const declineRematchRequest = () => {};
 
   const playComputer = () => {
-    // console.log("Now playing computer");
     setIsMyTurn(true);
     setIsPlaying(true);
     setIsPlayingComputer(true);

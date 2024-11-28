@@ -77,9 +77,9 @@ const Login = () => {
               Sign up successful! You can now log in.
             </p>
           )}
-          <p className="form-message">
+          {/* <p className="form-message">
             Forgot password? Click <Link to="/register">here</Link> to reset it.
-          </p>
+          </p> */}
           <p className="form-message">
             Don't have an account? <Link to="/register">Sign up now</Link>
           </p>

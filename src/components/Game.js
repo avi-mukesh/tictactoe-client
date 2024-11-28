@@ -82,15 +82,13 @@ const Game = () => {
             elo={user?.elo}
             theirTurn={isMyTurn}
           />
-          {!loadingOpponent ? (
+          {
             <PlayerCard
               username={opponentInfo?.username}
-              elo={opponent?.elo}
+              elo={opponent?.elo || opponentInfo?.elo}
               theirTurn={!isMyTurn}
             />
-          ) : (
-            "Loading"
-          )}
+          }
         </article>
       )}
       {gameResult && (

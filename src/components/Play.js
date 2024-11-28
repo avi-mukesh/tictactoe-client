@@ -98,7 +98,7 @@ const Play = () => {
 
   useEffect(() => {
     socket.emit("delete_incomplete_games", userInfo.username);
-  }, []);
+  }, [userInfo.username]);
 
   useEffect(() => {
     function onConnect() {

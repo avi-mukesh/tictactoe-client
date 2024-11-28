@@ -125,25 +125,17 @@ export const GameProvider = ({ children }) => {
   };
 
   const computerMove = () => {
-    // let coordinates;
-    // for (let i = 0; i < 3; i++) {
-    //   for (let j = 0; j < 3; j++) {
-    //     if (boardState[j][i] === SquareState.EMPTY) {
-    //       coordinates = { x: i, y: j };
-    //       break;
-    //     }
-    //   }
-    // }
-
     let coordinates = findBestMove(
-      [...boardState],
+      [[...boardState[0]], [...boardState[1]], [...boardState[2]]],
       SquareState[opponentSymbol],
       SquareState[mySymbol]
     );
 
-    opponentMadeMove({
-      coordinates,
-    });
+    if (coordinates) {
+      opponentMadeMove({
+        coordinates,
+      });
+    }
   };
 
   const opponentMadeMove = ({ coordinates }) => {
@@ -262,6 +254,7 @@ export const GameProvider = ({ children }) => {
   const requestRematch = () => {
     if (isPlayingComputer) {
       resetGameState();
+      playComputer();
     } else {
       setRematchRequested(true);
       socket.emit("request_rematch", gameRoomId);
